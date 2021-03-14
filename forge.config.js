@@ -5,8 +5,8 @@ const pjson = require('./package.json');
 function createFiles(callback) {
     fs.mkdirSync(out + vName + '/sql');
     fs.copyFileSync('.env.sample', out + vName + '/.env.sample');
-    // copy LICENSE...
-    // copy README...
+    fs.copyFileSync('LICENSE', out + vName + '/LICENSE');
+    fs.copyFileSync('README.md', out + vName + '/README.md');
     callback();
 }
 
