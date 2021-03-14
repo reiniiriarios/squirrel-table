@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+pre, code {
+  font-family: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;
+  font-size: 0.8rem;
+}
+code {
+  overflow: auto;
+  white-space: nowrap;
+  padding: 0.5rem;
+  background-color: #171e29;
+  display: block;
+  height: calc(100vh - 10.5rem);
+  width: 100%;
+  border-radius: 0.5rem;
+}
+.sql-hl-keyword {
+  color: #6fcdc5;
+}
+.sql-hl-function {
+  color: #ffd07a;
+}
+.sql-hl-number {
+  color: #ff7b72;
+}
+.sql-hl-string {
+  color: #d2a8ff;
+}
+.sql-hl-special {
+  color: #84c0f3;
+}
+.sql-hl-bracket {
+  color: #84c0f3;
+}

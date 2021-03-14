@@ -1,0 +1,39 @@
+{
+  "name": "squirrel-table",
+  "productName": "SquirrelTable",
+  "version": "0.1.0",
+  "description": "Run SQL files over SSH and save CSVs from the results",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "Emma Litwa-Vulcu",
+    "email": "80431903+reiniiriarios@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": "forge.config.js"
+  },
+  "dependencies": {
+    "csv": "^5.4.0",
+    "dotenv": "^8.2.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "node-ssh": "^11.1.1",
+    "sql-highlight": "^3.3.2"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "adm-zip": "^0.5.4",
+    "electron": "12.0.1"
+  }
+}

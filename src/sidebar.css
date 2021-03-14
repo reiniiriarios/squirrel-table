@@ -1,0 +1,111 @@
+h1 {
+  margin: 0;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+#refresh {
+  position: absolute;
+  top: 0.25rem;
+  left: 18rem;
+  background-color: transparent;
+  border: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+#refresh-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: #fefefe;
+  transition-duration: 0.4s;
+}
+#refresh:hover #refresh-icon {
+  fill: #6fcdc5;
+}
+#refresh:active #refresh-icon {
+  transform-origin: center;
+  animation-duration: 0.4s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-name: refresh;
+}
+@keyframes refresh { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); } 
+}
+#sidebar {
+  width: 20rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #171e29;
+  box-shadow: 5px 0px 10px 0px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+#sqllist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #1e2835;
+  max-height: calc(100vh - 2rem - 1px);
+  overflow-y: auto;
+}
+#sqllist li button {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  color: #eee;
+  border-bottom: 1px solid #171e29;
+  transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+#sqllist li button:hover, #sqllist li button.selected {
+  background-color: #243141;
+}
+#sqllist li button.selected {
+  color: #6fcdc5;
+}
+#sqllist li button:after {
+    background: #fff;
+    content: "";
+    height: 20rem;
+    left: 0;
+    opacity: 0.1;
+    position: absolute;
+    top: -13rem;
+    transform: rotate(55deg);
+    transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 2.5rem;
+    z-index: 9;
+}
+#sqllist li button:hover:after {
+    transform-origin: center;
+    animation-duration: 800ms;
+    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-play-state: running;
+    animation-name: shine;
+}
+@keyframes shine {
+    0% { left: 0; opacity: 0.1; }
+    100% { left: 50%; opacity: 0; }
+}

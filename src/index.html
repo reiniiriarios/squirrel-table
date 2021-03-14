@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="buttons.css">
+    <link rel="stylesheet" href="code.css">
+    <link rel="stylesheet" href="results.css">
+  </head>
+  <body>
+    <div id="taskbar">
+      <span id="titlebar"></span>
+      <button class="app-control" id="minimize">
+        <svg width="83" height="83" viewBox="0 0 83 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M81,36.166H2c-1.104,0-2,0.896-2,2v6.668c0,1.104,0.896,2,2,2h79c1.104,0,2-0.896,2-2v-6.668 C83,37.062,82.104,36.166,81,36.166z"/>
+        </svg>
+        </svg>
+      </button>
+      <button class="app-control" id="maximize">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M5 5H15V9H19V19H9V15H5V5ZM7 7H13V9H9V13H7V7ZM11 17H17V11H15V15H11V17ZM13 11H11V13H13V11Z" />
+        </svg>
+      </button>
+      <button class="app-control" id="close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114
+            19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142
+            12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" />
+        </svg>
+      </button>
+    </div>
+    <div id="sidebar">
+      <h1>Select Query</h1>
+      <button id="refresh">
+        <svg id="refresh-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+          <path d="M137.6,561.3H13.8H10v306.3l90.7-83.4C189.6,908.7,335.3,990,500,990c249.9,0,456.1-187.1,486.2-428.8H862.4C833.3,735.1,682.1,867.5,500,867.5c-129,0-242.5-66.5-308.1-167.2l151.3-139.1H137.6z"/>
+          <path d="M500,10C250.1,10,43.9,197.1,13.8,438.8h123.8C166.7,264.9,317.9,132.5,500,132.5c132.9,0,249.3,70.5,313.8,176.2L683.8,438.8h122.5h56.2h123.8h3.8V132.5l-87.7,87.7C813.8,93.1,666.6,10,500,10z"/>
+        </svg>
+      </button>
+      <ul id="sqllist"></ul>
+    </div>
+    <div id="queryWin">
+      <code> </code>
+      <div id="result"></div>
+      <div id="info">
+        <div id="desc"><h4>Comments:</h4><div id="comments"></div></div>
+        <div>
+          <div style="text-align: right;">
+            <button id="save" class="btn-action" style="display: none;">
+              <span>Save CSV</span>
+              <em>
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                <path d="M500,964.2c-130.9,0-253.9-51-346.5-143.5C61,728.1,10,605.1,10,474.2c0-92.7,26-182.9,75.2-261C133.1,137.3,200.7,76,280.8,35.8l41.2,82.1c-65.1,32.6-120.1,82.5-159,144.2c-40,63.4-61.1,
+                  136.6-61.1,212c0,219.5,178.6,398.1,398.1,398.1c219.5,0,398.1-178.6,398.1-398.1c0-75.3-21.1-148.6-61.1-212c-38.9-61.7-93.9-111.6-159-144.2l41.2-82.1C799.3,76,866.9,137.3,914.8,213.2c49.2,
+                  78.1,75.2,168.3,75.2,261c0,130.9-51,253.9-143.5,346.5C753.9,913.2,630.9,964.2,500,964.2z"/>
+                </svg>
+              </em>
+            </button>
+            <button id="run" class="btn-action disabled" disabled>
+              <span>Run Query</span>
+              <em>
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                <path d="M500,964.2c-130.9,0-253.9-51-346.5-143.5C61,728.1,10,605.1,10,474.2c0-92.7,26-182.9,75.2-261C133.1,137.3,200.7,76,280.8,35.8l41.2,82.1c-65.1,32.6-120.1,82.5-159,144.2c-40,63.4-61.1,
+                  136.6-61.1,212c0,219.5,178.6,398.1,398.1,398.1c219.5,0,398.1-178.6,398.1-398.1c0-75.3-21.1-148.6-61.1-212c-38.9-61.7-93.9-111.6-159-144.2l41.2-82.1C799.3,76,866.9,137.3,914.8,213.2c49.2,
+                  78.1,75.2,168.3,75.2,261c0,130.9-51,253.9-143.5,346.5C753.9,913.2,630.9,964.2,500,964.2z"/>
+                </svg>
+              </em>
+            </button>
+          </div>
+          <div id="status">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+
+    <template id="sqlListItemTemplate">
+      <li>
+        <button class="sqlbutton">
+          <span class="circle" aria-hidden="true">
+            <span class="icon arrow"></span>
+          </span>
+          <span class="button-text"></span>
+        </button>
+      </li>
+    </template>
+
+    <!--<script>window.$ = window.jQuery = require('jquery');</script>-->
+    <script src="sqllist.js"></script>
+  </body>
+</html>
