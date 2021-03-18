@@ -1,0 +1,96 @@
+.btn {
+  position: relative;
+  color: $textColor;
+  background-color: transparent;
+  text-decoration: none;
+  border: 1px solid $lightgrey;
+  z-index: 10;
+  overflow: hidden;
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  width: 80px;
+  height: 27px;
+  border-radius: 16px;
+  padding-bottom: 3px;
+
+  &:after {
+    background: $shinyColor;
+    content: "";
+    height: 100px;
+    left: -50px;
+    opacity: 0.2;
+    position: absolute;
+    top: -50px;
+    transform: rotate(35deg);
+    transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 32px;
+    z-index: 9;
+  }
+
+  &.disabled {
+    color: $mutedTextColor;
+    border-color: $darkgrey;
+  }
+  &:enabled {
+    cursor: pointer;
+    &:hover {
+      background-color: $uiColor4;
+      &:after {
+        left: 100px;
+        opacity: 0;
+        transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+      }
+    }
+  }
+  
+  &.btn-action {
+    width: 110px;
+    height: 32px;
+    margin-left: 16px;
+    z-index: 10;
+
+    span, em {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+    }
+    span {
+      top: 6px;
+      visibility: visible;
+    }
+    em {
+      top: 8px;
+      visibility: hidden;
+      svg {
+        fill: $white;
+        width: 16px;
+        height: 16px;
+        transform-origin: center;
+        animation-duration: 1.5s;
+        animation-timing-function: linear;
+        animation-delay: 0s;
+        animation-iteration-count: infinite;
+        animation-direction: normal;
+        animation-fill-mode: none;
+        animation-play-state: running;
+        animation-name: rotato;
+      }
+    }
+
+    &.running {
+      border-color: $darkgrey;
+      span {
+        visibility: hidden;
+      }
+      em {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+@keyframes rotato {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,18 @@
+{
+	"sqlDir": "C:\\code\\squirrel-table\\sql",
+	"ssh": {
+		"host": "ssh.us-5.magento.cloud",
+		"port": "22",
+		"user": "3.ent-52qzud7uomh4m-production-vohbr3y",
+		"pass": "",
+		"key": "C:\\ssh\\dm.magento.emma.key",
+		"remotePort": "3306"
+	},
+	"sql": {
+		"user": "52qzud7uomh4m",
+		"pass": "xjEpbI7ih2MEPXD",
+		"host": "127.0.0.1",
+		"db": "52qzud7uomh4m"
+	},
+	"sshEnabled": true
+}

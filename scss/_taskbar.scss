@@ -1,0 +1,56 @@
+#taskbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  width: calc(100%);
+  height: $taskbarHeight;
+  color: $mutedTextColor;
+  background-color: $uiColor4;
+  z-index: 100;
+
+  #titlebar {
+    display: inline-block;
+    padding-top: 6px;
+  }
+
+  #icon {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+
+  #app-control {
+    position: absolute;
+    top: 0;
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      border: none;
+      width: 48px;
+      height: $taskbarHeight;
+      padding-top: 7px;
+      text-align: center;
+      background-color: transparent;
+      z-index: 100;
+      svg {
+        fill: $lightgrey;
+        transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+        width: 10px;
+        height: 10px;
+      }
+      &:hover {
+        background-color: $uiColor6;
+      }
+      &#close:hover {
+        background-color: $darkred;
+        color: $white;
+      }
+    }
+  }
+}

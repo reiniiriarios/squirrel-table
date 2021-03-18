@@ -1,0 +1,53 @@
+const { ipcMain } = require('electron');
+const path = require('path');
+const { NodeSSH } = require('node-ssh');
+const ssh = new NodeSSH();
+require('dotenv').config();
+const csvParse = require('csv-parse');
+const messenger = require(path.join(__dirname,'main-messaging.js'));
+
+function sshExec(command, callback) {
+    messenger.sendStatus('Connecting Over SSH');
+    ssh.connect({
+        host: process.env.SSH_host,
+        username: process.env.SSH_user,
+        privateKey: process.env.SSH_privatekey
+    }).then(() => {
+        messenger.sendStatus('Executing Query');
+        ssh.execCommand(command, { cwd: '/' }).then((result) => {
+            if (result.stderr) {
+                messenger.showError('Remote Server Error: ' + result.stderr);
+                return false;
+            }
+            callback(result.stdout);
+        });
+    }, function failureHandler(error) {
+        messenger.showError('Remote Server Error: ' + result.stderr);
+        return false;
+    });
+}
+
+function tsv2array(tsvString, callback) {
+    messenger.sendStatus('Converting TSV to Array');
+    csvParse(tsvString, {
+        delimiter: "\t",
+        trim: true
+    }, (err, csvArray) => {
+        if (err) {
+            messenger.showError('CSV Parsing Error: ' + err.toString());
+            return false;
+        }
+        callback(csvArray);
+    });
+}
+
+ipcMain.on('run-query', (event, sql) => {
+    messenger.sendStatus('Running Query');
+    sql = sql.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/(?:\")/g, '\'');
+    let mysqlcmd = "mysql -h " + process.env.SQL_host + " -u " + process.env.SQL_user + " -p'" + process.env.SQL_pass + "' " + process.env.SQL_db + " -e \"" + sql + "\"";
+    sshExec(mysqlcmd, function(tsvOutput) {
+        tsv2array(tsvOutput, function(result) {
+            event.reply('query-result', result);
+        });
+    });
+})

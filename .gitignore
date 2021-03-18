@@ -93,3 +93,6 @@ sql/*.sql
 
 # SSH keys
 ssh/
+
+# Dist (too large for github)
+dist/

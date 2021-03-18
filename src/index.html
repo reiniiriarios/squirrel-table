@@ -3,62 +3,251 @@
   <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="sidebar.css">
-    <link rel="stylesheet" href="buttons.css">
-    <link rel="stylesheet" href="code.css">
-    <link rel="stylesheet" href="results.css">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div id="taskbar">
+      <img id="icon" src="icon-32x32.png">
       <span id="titlebar"></span>
-      <button class="app-control" id="minimize">
-        <svg width="83" height="83" viewBox="0 0 83 83" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M81,36.166H2c-1.104,0-2,0.896-2,2v6.668c0,1.104,0.896,2,2,2h79c1.104,0,2-0.896,2-2v-6.668 C83,37.062,82.104,36.166,81,36.166z"/>
-        </svg>
-        </svg>
-      </button>
-      <button class="app-control" id="maximize">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M5 5H15V9H19V19H9V15H5V5ZM7 7H13V9H9V13H7V7ZM11 17H17V11H15V15H11V17ZM13 11H11V13H13V11Z" />
-        </svg>
-      </button>
-      <button class="app-control" id="close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114
-            19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142
-            12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" />
-        </svg>
-      </button>
+      <ul id="app-control">
+        <li id="minimize">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.5 1.11">
+            <rect width="9.5" height="1.11"/>
+          </svg>
+        </li>
+        <li id="maximize">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.5 8.22">
+            <path d="M9.5,8.22H0V0H9.5ZM8.22,1.11H1.28v6H8.22Z"/>
+          </svg>
+        </li>
+        <li id="close">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.25 9.25">
+            <polygon points="9.25 8 8.03 9.22 4.64 5.83 1.22 9.25 0 8.03 3.42 4.61 0.03 1.22 1.25 0 4.64 3.39 8 0.03 9.22 1.25 5.86 4.61 9.25 8"/>
+          </svg>
+        </li>
+      </ul>
     </div>
-    <div id="sidebar">
-      <h1>Select Query</h1>
-      <button id="refresh">
-        <svg id="refresh-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
-          <path d="M137.6,561.3H13.8H10v306.3l90.7-83.4C189.6,908.7,335.3,990,500,990c249.9,0,456.1-187.1,486.2-428.8H862.4C833.3,735.1,682.1,867.5,500,867.5c-129,0-242.5-66.5-308.1-167.2l151.3-139.1H137.6z"/>
-          <path d="M500,10C250.1,10,43.9,197.1,13.8,438.8h123.8C166.7,264.9,317.9,132.5,500,132.5c132.9,0,249.3,70.5,313.8,176.2L683.8,438.8h122.5h56.2h123.8h3.8V132.5l-87.7,87.7C813.8,93.1,666.6,10,500,10z"/>
-        </svg>
-      </button>
-      <ul id="sqllist"></ul>
-    </div>
-    <div id="queryWin">
-      <code> </code>
-      <div id="result"></div>
+    <div id="body-container">
+
+      <div id="menubar">
+        <ul>
+          <li id="dir-settings-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.33 18">
+              <path d="M23.17,5.34V1.59H10.61L8.64,0H0V18H23.17L27.33,5.34ZM1.27,1.4H8.08L10.13,3h11.7V5.34H4.17l-2.9,8.8ZM22.14,16.67H1.81l.06-.17L5.06,6.67H25.54l-2.37,7Z"/>
+            </svg>
+          </li>
+          <li id="sql-settings-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.02 23.78">
+              <path d="M9.51,0C4.25,0,0,1.58,0,4.08V19.26c0,2.5,4.25,4.52,9.51,4.52s9.51-2,9.51-4.52V4.08C19,1.58,14.76,0,9.51,0Zm.06,1.5c4.36,0,7.9,1.15,7.9,2.58s-3.54,2.58-7.9,2.58S1.65,5.51,
+                1.65,4.08,5.19,1.5,9.57,1.5ZM17.48,7V10.1a4.94,4.94,0,0,1-.81.49,6.32,6.32,0,0,1-.63.26,16.9,16.9,0,0,1-4.59.86l-.93,0-1,0c-.47,0-.94,0-1.39,0a17.57,17.57,0,0,1-5.09-.88,6,6,0,0,1-.72-.31,
+                3.51,3.51,0,0,1-.7-.43V7a3.51,3.51,0,0,0,.7.43,6,6,0,0,0,.72.3,19.92,19.92,0,0,0,6.48.93A19.85,19.85,0,0,0,16,7.7a4.59,4.59,0,0,0,.63-.26A3.86,3.86,0,0,0,17.48,7Zm0,12.23A1.15,1.15,0,0,
+                1,17,20c-1.07,1-4,2-7.47,2s-6.4-1-7.47-2a1.15,1.15,0,0,1-.44-.85v-2a3.51,3.51,0,0,0,.7.43,6,6,0,0,0,.72.3,20,20,0,0,0,6.48.92A19.88,19.88,0,0,0,16,17.94a4.59,4.59,0,0,0,.63-.26,4.34,4.34,
+                0,0,0,.81-.49Zm0-4.84a.17.17,0,0,1,0,.07v.84a4.94,4.94,0,0,1-.81.49A6.32,6.32,0,0,1,16,16a17.29,17.29,0,0,1-4.54.86h-.05l-.93.05-1,0c-.47,0-.94,0-1.39,0A17.57,17.57,0,0,1,3.08,16a6,6,0,0,
+                1-.72-.31,3.51,3.51,0,0,1-.7-.43v-3a.17.17,0,0,0,0,.07v-.17a3.51,3.51,0,0,0,.7.43,7.07,7.07,0,0,0,.72.31,20,20,0,0,0,6.48.92,19.88,19.88,0,0,0,6.48-.93c.23-.09.44-.17.63-.26a4.34,4.34,0,0,
+                0,.81-.5Z"/>
+            </svg>
+          </li>
+          <li id="ssh-settings-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.75 21.47">
+              <path d="M24.75,21.47H0V0H24.75Zm-1.4-20H1.4V20h22Z"/>
+              <polygon points="4.53 5.07 6.49 5.07 11.62 10.6 6.47 16.4 4.53 16.4 9.53 10.65 4.53 5.07"/>
+              <rect x="12.55" y="14.8" width="8.58" height="1.55"/>
+            </svg>
+          </li>
+          <li id="info-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.94 24.94">
+              <path d="M24.94,12.47A12.47,12.47,0,1,1,12.47,0,12.47,12.47,0,0,1,24.94,12.47ZM12.48,1.57a10.9,10.9,0,1,0,10.9,10.9A10.89,10.89,0,0,0,12.48,1.57Z"/>
+              <circle cx="12.48" cy="6.78" r="0.9"/>
+              <rect x="11.58" y="9.78" width="1.8" height="9.51"/>
+            </svg>
+          </li>
+        </ul>
+      </div>
+
+      <div id="settings-panel">
+
+        <div id="dir-settings-panel">
+          <h2>SQL Files</h2>
+          <div class="input-group">
+            <label for="dir-sql">Choose Directory</label>
+            <div>
+              <input type="text" id="dir-sql" class="input-file">
+              <button class="choose-file" id="dir-sql-choose">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.33 18">
+                  <path d="M23.17,5.34V1.59H10.61L8.64,0H0V18H23.17L27.33,5.34ZM1.27,1.4H8.08L10.13,3h11.7V5.34H4.17l-2.9,8.8ZM22.14,16.67H1.81l.06-.17L5.06,6.67H25.54l-2.37,7Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="save-settings">
+            <button class="btn" id="save-dir-settings-button">Save</button>
+          </div>
+          <div class="settings-error" id="dir-error-msg"></div>
+        </div>
+
+        <div id="sql-settings-panel">
+          <h2>SQL Settings</h2>
+          <div class="input-group">
+            <label for="sql-user">Username</label>
+            <input type="text" id="sql-user">
+          </div>
+          <div class="input-group">
+            <label for="sql-pass">Password</label>
+            <input type="password" id="sql-pass">
+          </div>
+          <div class="input-group">
+            <label for="sql-host">Hostname</label>
+            <input type="text" id="sql-host">
+          </div>
+          <div class="input-group">
+            <label for="sql-db">Database</label>
+            <input type="text" id="sql-db">
+          </div>
+          <div class="save-settings">
+            <button class="btn" id="save-sql-settings-button">Save</button>
+          </div>
+          <div class="settings-error" id="sql-error-msg"></div>
+        </div>
+
+        <div id="ssh-settings-panel">
+          <h2>SSH Settings</h2>
+          <div class="input-group" style="text-align: center;">
+            <input type="checkbox" class="toggle" id="ssh-enabled">
+          </div>
+          <div class="input-group">
+            <label for="ssh-host">Hostname</label>
+            <input type="text" id="ssh-host">
+          </div>
+          <div class="input-group">
+            <label for="ssh-port">Port</label>
+            <input type="text" id="ssh-port">
+          </div>
+          <div class="input-group">
+            <label for="ssh-port-remote">Remote Port</label>
+            <input type="text" id="ssh-port-remote">
+          </div>
+          <div class="input-group">
+            <label for="ssh-user">Username</label>
+            <input type="text" id="ssh-user">
+          </div>
+          <div class="input-group">
+            <label for="ssh-pass">Password</label>
+            <input type="password" id="ssh-pass">
+          </div>
+          <div class="input-group">
+            <label for="ssh-key">Private Key</label>
+            <div>
+              <input type="text" id="ssh-key" class="input-file">
+              <button class="choose-file" id="ssh-choose-key">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.33 18">
+                  <path d="M23.17,5.34V1.59H10.61L8.64,0H0V18H23.17L27.33,5.34ZM1.27,1.4H8.08L10.13,3h11.7V5.34H4.17l-2.9,8.8ZM22.14,16.67H1.81l.06-.17L5.06,6.67H25.54l-2.37,7Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="save-settings">
+            <button class="btn" id="save-ssh-settings-button">Save</button>
+          </div>
+          <div class="settings-error" id="ssh-error-msg"></div>
+        </div>
+
+        <div id="info-panel">
+          <img src="icon-128x128.png">
+          <div id="info-name"></div>
+          <div id="info-version"></div>
+          <div id="author">
+            <span>developer</span><br>
+            Emma Litwa-Vulcu
+          </div>
+          <div id="software">
+            <span>with</span><br>
+            Node.js<br>
+            Electron Forge
+          </div>
+          <div id="links">
+            <span>github</span><br>
+            <a href="https://github.com/reiniiriarios/squirrel-table" target="_blank">reiniiriarios/squirrel-table</a>
+          </div>
+          <div id="license">
+            <span>license</span><br>
+            <a href="https://github.com/reiniiriarios/squirrel-table/blob/master/LICENSE" target="_blank">GNU GPL-3.0</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="sidebar">
+        <ul id="sqllist"></ul>
+        <div id="no-queries-msg">
+          No queries to display.
+        </div>
+      </div>
+
+      <div id="content">
+
+        <div id="getting-started">
+          <div id="start-dir">
+            <h2>Select a Directory</h2>
+            <div>
+              To get started, you'll first want to select a directory of .sql files.
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.33 18">
+              <path d="M23.17,5.34V1.59H10.61L8.64,0H0V18H23.17L27.33,5.34ZM1.27,1.4H8.08L10.13,3h11.7V5.34H4.17l-2.9,8.8ZM22.14,16.67H1.81l.06-.17L5.06,6.67H25.54l-2.37,7Z"/>
+            </svg>
+          </div>
+          <div id="start-sql">
+            <h2>SQL Settings</h2>
+            <div>
+              Make sure all SQL settings are filled.
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.02 23.78">
+              <path d="M9.51,0C4.25,0,0,1.58,0,4.08V19.26c0,2.5,4.25,4.52,9.51,4.52s9.51-2,9.51-4.52V4.08C19,1.58,14.76,0,9.51,0Zm.06,1.5c4.36,0,7.9,1.15,7.9,2.58s-3.54,2.58-7.9,2.58S1.65,5.51,
+                1.65,4.08,5.19,1.5,9.57,1.5ZM17.48,7V10.1a4.94,4.94,0,0,1-.81.49,6.32,6.32,0,0,1-.63.26,16.9,16.9,0,0,1-4.59.86l-.93,0-1,0c-.47,0-.94,0-1.39,0a17.57,17.57,0,0,1-5.09-.88,6,6,0,0,1-.72-.31,
+                3.51,3.51,0,0,1-.7-.43V7a3.51,3.51,0,0,0,.7.43,6,6,0,0,0,.72.3,19.92,19.92,0,0,0,6.48.93A19.85,19.85,0,0,0,16,7.7a4.59,4.59,0,0,0,.63-.26A3.86,3.86,0,0,0,17.48,7Zm0,12.23A1.15,1.15,0,0,
+                1,17,20c-1.07,1-4,2-7.47,2s-6.4-1-7.47-2a1.15,1.15,0,0,1-.44-.85v-2a3.51,3.51,0,0,0,.7.43,6,6,0,0,0,.72.3,20,20,0,0,0,6.48.92A19.88,19.88,0,0,0,16,17.94a4.59,4.59,0,0,0,.63-.26,4.34,4.34,
+                0,0,0,.81-.49Zm0-4.84a.17.17,0,0,1,0,.07v.84a4.94,4.94,0,0,1-.81.49A6.32,6.32,0,0,1,16,16a17.29,17.29,0,0,1-4.54.86h-.05l-.93.05-1,0c-.47,0-.94,0-1.39,0A17.57,17.57,0,0,1,3.08,16a6,6,0,0,
+                1-.72-.31,3.51,3.51,0,0,1-.7-.43v-3a.17.17,0,0,0,0,.07v-.17a3.51,3.51,0,0,0,.7.43,7.07,7.07,0,0,0,.72.31,20,20,0,0,0,6.48.92,19.88,19.88,0,0,0,6.48-.93c.23-.09.44-.17.63-.26a4.34,4.34,0,0,
+                0,.81-.5Z"/>
+            </svg>
+          </div>
+          <div id="start-ssh">
+            <h2>SSH</h2>
+            <div>
+              If connecting over SSH, enable it and make sure all settings are filled.<br>
+              You can either enter a password or choose a private key file.
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.75 21.47">
+              <path d="M24.75,21.47H0V0H24.75Zm-1.4-20H1.4V20h22Z"/>
+              <polygon points="4.53 5.07 6.49 5.07 11.62 10.6 6.47 16.4 4.53 16.4 9.53 10.65 4.53 5.07"/>
+              <rect x="12.55" y="14.8" width="8.58" height="1.55"/>
+            </svg>
+          </div>
+        </div>
+
+        <div id="code-area">
+          <code>&nbsp;</code>
+          <div id="line-numbers"></div>
+        </div>
+
+        <div id="result"></div>
+
+      </div>
+
       <div id="info">
         <div id="desc"><h4>Comments:</h4><div id="comments"></div></div>
         <div>
           <div style="text-align: right;">
-            <button id="save" class="btn-action" style="display: none;">
+            <button id="save" class="btn btn-action" style="display: none;">
               <span>Save CSV</span>
               <em>
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
-                <path d="M500,964.2c-130.9,0-253.9-51-346.5-143.5C61,728.1,10,605.1,10,474.2c0-92.7,26-182.9,75.2-261C133.1,137.3,200.7,76,280.8,35.8l41.2,82.1c-65.1,32.6-120.1,82.5-159,144.2c-40,63.4-61.1,
-                  136.6-61.1,212c0,219.5,178.6,398.1,398.1,398.1c219.5,0,398.1-178.6,398.1-398.1c0-75.3-21.1-148.6-61.1-212c-38.9-61.7-93.9-111.6-159-144.2l41.2-82.1C799.3,76,866.9,137.3,914.8,213.2c49.2,
-                  78.1,75.2,168.3,75.2,261c0,130.9-51,253.9-143.5,346.5C753.9,913.2,630.9,964.2,500,964.2z"/>
+                  <path d="M500,964.2c-130.9,0-253.9-51-346.5-143.5C61,728.1,10,605.1,10,474.2c0-92.7,26-182.9,75.2-261C133.1,137.3,200.7,76,280.8,35.8l41.2,82.1c-65.1,32.6-120.1,82.5-159,144.2c-40,63.4-61.1,
+                    136.6-61.1,212c0,219.5,178.6,398.1,398.1,398.1c219.5,0,398.1-178.6,398.1-398.1c0-75.3-21.1-148.6-61.1-212c-38.9-61.7-93.9-111.6-159-144.2l41.2-82.1C799.3,76,866.9,137.3,914.8,213.2c49.2,
+                    78.1,75.2,168.3,75.2,261c0,130.9-51,253.9-143.5,346.5C753.9,913.2,630.9,964.2,500,964.2z"/>
                 </svg>
               </em>
             </button>
-            <button id="run" class="btn-action disabled" disabled>
+            <button id="run" class="btn btn-action disabled" disabled>
               <span>Run Query</span>
               <em>
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
@@ -85,7 +274,11 @@
       </li>
     </template>
 
-    <!--<script>window.$ = window.jQuery = require('jquery');</script>-->
-    <script src="sqllist.js"></script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="renderer-app.js"></script>
+    <script src="renderer-messaging.js"></script>
+    <script src="renderer-preferences.js"></script>
+    <script src="renderer-sql-list.js"></script>
+    <script src="renderer-run-query.js"></script>
   </body>
 </html>

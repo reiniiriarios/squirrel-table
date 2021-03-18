@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+  outline: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+*::before, *::after {
+  box-sizing: border-box;
+}
+body {
+  margin: auto;
+  padding: 0;
+  background-color: $uiColor3;
+  color: $textColor;
+}
+body, input, button, textarea, td, th {
+  font-family: $mainFontFamilies;
+  font-size: $fontSize;
+}
+#taskbar, #menubar {
+  -webkit-app-region: drag;
+}
+#app-control, #menubar ul li {
+  -webkit-app-region: no-drag;
+}
+input[type="text"],
+input[type="password"],
+textarea,
+code,
+code span {
+  -webkit-user-select: text;
+  user-select: text;
+}
+::selection {
+  color: $uiColor1;
+  background: $accentColor;
+}
+table {
+  border-collapse: collapse;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}            
+::-webkit-scrollbar-track {
+  background-color: $uiMutedColor2;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: $uiMutedColor1;
+}
+::-webkit-scrollbar-thumb {
+  height: 25%;
+  background-color: $uiMutedColor2;
+  border: 1px $uiMutedColor1 solid;
+}
+::-webkit-scrollbar-corner {
+  background-color: $uiMutedColor2;
+}
+a, a:hover, a:visited, a:active {
+  color: $accentColor;
+}
+
+#body-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-top: $taskbarHeight;
+}
+
+.toggle {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 95px;
+  height: 28px;
+  display: inline-block;
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border: 1px solid $uiColor6;
+  transition: background-color ease 0.3s;
+  
+  &:before {
+    content: "enabled disabled";
+    display: block;
+    position: absolute;
+    z-index: 2;
+    width: 22px;
+    height: 22px;
+    background: $mutedTextColor;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-indent: -57px;
+    word-spacing: 32px;
+    line-height: 21px;
+    color: $textColor;
+    white-space: nowrap;
+    transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+  }
+  &:checked {
+    &:before {
+      background-color: $green;
+      left: 69px;
+    }
+  }
+  &:after {
+    background: $shinyColor;
+    content: "";
+    height: 100px;
+    left: -50px;
+    opacity: 0.2;
+    position: absolute;
+    top: -50px;
+    transform: rotate(35deg);
+    transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 32px;
+    z-index: 9;
+  }
+  &:hover {
+    background-color: $uiColor4;
+    &:after {
+      left: 100px;
+      opacity: 0;
+    }
+  }
+}

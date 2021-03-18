@@ -1,9 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu, globalShortcut } = require('electron');
 const path = require('path');
-const { NodeSSH } = require('node-ssh');
-const ssh = new NodeSSH();
-require('dotenv').config();
 
+// Remove menu toolbar
 Menu.setApplicationMenu(false);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -13,32 +11,38 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 let mainWindow;
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', function(){
-  // Create the browser window.
+// Some APIs can only be used after ready
+app.on('ready', function() {
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 720,
-    minWidth: 800,
-    minHeight: 600,
+    width: 1100,
+    height: 640,
+    minWidth: 1024,
+    minHeight: 450,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: true,  // deprecated
+      contextIsolation: false // replaces nodeIntegration
     },
-    frame: false,
+    frame: false, // frameless window
     icon: path.join(__dirname, 'build/icons/icon.ico')
   });
+  global.mainWindowId = mainWindow.id;
 
+  // Cmd/Ctrl+R Refresh page, mostly useful for dev
 	globalShortcut.register('CommandOrControl+R', function() {
 		mainWindow.reload();
 	});
   
-	globalShortcut.register('CommandOrControl+D', function() {
+  // Cmd/Ctrl+D Show dev tools
+	globalShortcut.register('CommandOrControl+Shift+I', function() {
     mainWindow.webContents.openDevTools();
 	});
+  
+  // Cmd/Ctrl+Q Quit app
+	globalShortcut.register('CommandOrControl+Q', function() {
+    app.quit();
+	});
 
+  // Load index
   mainWindow.loadFile(path.join(__dirname,'index.html'));
 });
 
@@ -51,6 +55,7 @@ app.on('window-all-closed', () => {
   }
 });
 
+// App control buttons
 ipcMain.handle('close-app', (event) => {
   app.quit();
 });
@@ -63,12 +68,13 @@ ipcMain.handle('maximize-app', (event) => {
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+  // dock icon is clicked and there are no other windows open
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
+// Init data only available in main process
 ipcMain.on('init-variables', (event) => {
   data = {
     appName: app.getName(),
@@ -78,13 +84,9 @@ ipcMain.on('init-variables', (event) => {
   event.reply('init-reply', data);
 });
 
-// Error handling
-showError = function(message) {
-  console.log(message);
-  mainWindow.webContents.send('error-status', message);
-  dialog.showErrorBox('Oops! Something went wrong.', message);
-}
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-require(path.join(__dirname,'runquery.js'));
+// Main Process Files
+require(path.join(__dirname,'main-messaging.js'));
+require(path.join(__dirname,'main-preferences.js'));
+require(path.join(__dirname,'main-sql-list.js'));
+require(path.join(__dirname,'main-run-query.js'));
+require(path.join(__dirname,'main-save-csv.js'));

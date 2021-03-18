@@ -1,0 +1,104 @@
+#settings-panel {
+  width: $settingsPanelWidth;
+  min-width: $settingsPanelWidth;
+  max-width: $settingsPanelWidth;
+  position: absolute;
+  top: $taskbarHeight;
+  left: $menubarWidth;
+  height: calc(100vh - #{$taskbarHeight});
+  background-color: $uiColor2;
+  z-index: 10;
+  display: none;
+  h2 {
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    color: $textColor;
+  }
+  .save-settings {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .settings-error {
+    color: $red;
+    padding: 20px;
+    text-align: center;
+  }
+  #dir-settings-panel {
+    display: none;
+    padding: 16px;
+  }
+  #ssh-settings-panel {
+    display: none;
+    padding: 16px;
+  }
+  #sql-settings-panel {
+    display: none;
+    padding: 16px;
+  }
+  #info-panel {
+    display: none;
+    text-align: center;
+    padding: 32px;
+    img {
+      width: 64px;
+      height: 64px;
+    }
+    #info-name {
+      margin-top: 10px;
+      font-size: 17px;
+    }
+    #info-version {
+      margin-bottom: 10px;
+      color: $mutedTextColor;
+    }
+    #author, #software, #links, #license {
+      margin-top: 10px;
+      span {
+        color: $mutedTextColor;
+      }
+    }
+  }
+}
+.input-group {
+  margin-bottom: 14px;
+  label {
+    display: block;
+    margin-bottom: 4px;
+    color: $mutedTextColor;
+  }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    border: 1px solid $uiColor6;
+    background-color: $uiColor2;
+    color: $textColor;
+    padding: 4px 8px;
+    &:hover {
+      border: 1px solid $uiColor7;
+    }
+    &:focus {
+      background-color: $uiColor3;
+    }
+    &.input-file {
+      width: calc(100% - 32px);
+    }
+  }
+}
+.choose-file {
+  width: 28px;
+  border: 1px solid $uiColor6;
+  background-color: $uiColor2;
+  color: $textColor;
+  padding: 4px;
+  svg {
+    fill: $mutedTextColor;
+  }
+  &:hover {
+    background-color: $uiColor3;
+    border: 1px solid $uiColor7;
+    svg {
+      fill: $textColor;
+    }
+  }
+}

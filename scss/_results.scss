@@ -1,0 +1,68 @@
+#result {
+  overflow: auto;
+  width: 100%;
+  height: calc(100vh - #{$taskbarHeight} - #{$infoHeight});
+  display: none;
+  background-color: $uiColor1;
+  border-bottom: 1px solid $uiColor1;
+
+  table {
+    min-width: 100%;
+    thead {
+      tr {
+        border-bottom: 1px solid $uiColor2;
+        th {
+          text-align: left;
+          font-weight: normal;
+          padding: 8px 10px;
+          background-color: $uiColor3;
+          border-right: 1px solid $uiColor1;
+          &:last-child {
+            border: none;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid $uiColor3;
+        td {
+          padding: 8px 10px;
+          background-color: $uiColor2;
+          border-right: 1px solid $uiColor3;
+          &:last-child {
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}
+.datatype-decimal {
+  color: $purple;
+  white-space: nowrap;
+}
+.datatype-int {
+  color: $red;
+  white-space: nowrap;
+}
+.datatype-float {
+  color: $yellow;
+  white-space: nowrap;
+}
+.datatype-enum {
+  color: $blue;
+}
+.datatype-string {
+  color: $textColor;
+}
+.datatype-json {
+  color: $orange;
+}
+.datatype-blob {
+  color: $mutedTextColor;
+}
+.datatype-time {
+  color: $green;
+  white-space: nowrap;
+}

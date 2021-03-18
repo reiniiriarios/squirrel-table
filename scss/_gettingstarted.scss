@@ -1,0 +1,33 @@
+#getting-started {
+  display: none;
+  position: relative;
+  /* 100vh - taskbarHeight - infoHeight (6) - bottomPadding (2) */
+  height: calc(100vh - #{$taskbarHeight});
+  z-index: 200;
+  width: 100%;
+  background-color: $uiColor1;
+  overflow: auto;
+  padding: 25px;
+  text-align: center;
+  h2 {
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    color: $textColor;
+  }
+  & > div {
+    padding: 20px;
+    text-align: center;
+    display: none;
+    & > div {
+      color: $mutedTextColor;
+    }
+    svg {
+      width: 50px;
+      height: 50px;
+      fill: $mutedTextColor;
+      margin-top: 20px;
+    }
+  }
+}

@@ -1,0 +1,53 @@
+pre, code {
+  font-family: $monospaceFontFamilies;
+  font-size: $fontSize;
+}
+#code-area {
+  position: relative;
+  /* 100vh - taskbarHeight - infoHeight (6) - bottomPadding (2) */
+  height: calc(100vh - #{$taskbarHeight} - #{$infoHeight});
+  width: 100%;
+  background-color: $uiColor1;
+  overflow: auto;
+  code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    padding: 6px 6px 6px 36px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+  }
+  #line-numbers {
+    font-family: $monospaceFontFamilies;
+    z-index: 21;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 32px;
+    padding: 6px;
+    color: $mutedTextColor;
+    text-align: right;
+  }
+}
+.sql-hl-keyword {
+  color: $green;
+}
+.sql-hl-function {
+  color: $yellow;
+}
+.sql-hl-number {
+  color: $red;
+}
+.sql-hl-string {
+  color: $purple;
+}
+.sql-hl-special {
+  color: $blue;
+}
+.sql-hl-bracket {
+  color: $blue;
+}
