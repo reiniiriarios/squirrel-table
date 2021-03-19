@@ -83,9 +83,11 @@ exports.loadPreferences = async () => {
     catch(error) {
       console.log(error);
       console.log('Resetting preferences');
-      writePreferences().then(() => {
+      writePreferences(preferences).then(() => {
         console.log('Preferences reset');
         resolve(preferences);
+      }).catch(err => {
+        messenger.showError(err);
       });
     }
   });
@@ -96,7 +98,6 @@ async function writePreferences(newPrefs) {
     preferencesString = JSON.stringify(newPrefs, null, "\t");
     fs.writeFile(preferencesFile, preferencesString, (error) => {
       if (error) {
-        messenger.showError(error);
         reject(error);
       }
       else {
@@ -123,10 +124,12 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
   else {
     updatePreferences(section, newPrefs).then(() => {
       return encryptPrefs();
-    }).then((encryptedPrefs) => {
+    }).then(encryptedPrefs => {
       return writePreferences(encryptedPrefs);
     }).then(() => {
       event.reply('preferences-updated', section, newPrefs);
+    }).catch(err => {
+      messenger.showError(err);
     });
   }
 });
@@ -155,7 +158,7 @@ ipcMain.on('choose-sql-dir',(event) => {
   dialog.showOpenDialog({
     title: "Choose Directory of SQL Files",
     defaultPath : app.getPath('documents'),
-    buttonLabel : "Choose File",
+    buttonLabel : "Choose Directory",
     properties: ["openDirectory"]
   }).then((result) => {
     if (!result.canceled) {

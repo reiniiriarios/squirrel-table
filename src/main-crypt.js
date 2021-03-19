@@ -4,6 +4,7 @@ const secret = 's49t8hCTx3hniuc4';
 
 module.exports.encrypt = async (sourceString) => {
   return new Promise((resolve, reject) => {
+    if (!sourceString) resolve('');
     sourceString = sourceString.normalize('NFC');
     let salt = crypto.randomBytes(8).toString('hex');
     crypto.scrypt(secret, salt, 24, (err, key) => {

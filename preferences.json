@@ -1,18 +1,18 @@
 {
-	"sqlDir": "C:\\code\\_sql",
+	"sqlDir": "",
+	"sshEnabled": true,
 	"ssh": {
-		"host": "ssh.us-5.magento.cloud",
+		"host": "",
 		"port": "22",
-		"user": "5f23ec956fd3394baccd05977c924101c23e6341c1014e6c5f0899bb96f240aa862dd8192f6831203b08a8edd4a7e65c.e83a266514ceec9a.5cb7965fd4cd6b88c1e8f9ae79c1313a",
-		"pass": "fc4b9a44a24074f4f46cea0dbaaf099d.d075be7a91e3027a.230ecc75778da7a1c52df076dc824466",
-		"key": "C:\\ssh\\dm.magento.emma.key",
+		"user": "",
+		"pass": "",
+		"key": "",
 		"remotePort": "3306"
 	},
 	"sql": {
-		"user": "db959451a9811c88e1af7048d7cabc77.826e9f7d660c8575.cf4496a75608543bb287fc04832a68e0",
-		"pass": "47e4d48a257a8ab8c446186b54fd4d4d.4bc422294a419c3d.d90a009fca8783f3a5a99d4b31232f2d",
-		"host": "127.0.0.1",
-		"db": "52qzud7uomh4m"
-	},
-	"sshEnabled": true
+		"user": "",
+		"pass": "",
+		"host": "",
+		"db": ""
+	}
 }

@@ -19,6 +19,8 @@ let mainWindow;
 app.on('ready', function() {
   prefs.loadPreferences().then((preferences) => {
     createMainWindow();
+  }).catch(err => {
+    messenger.showError(err);
   });
 });
 

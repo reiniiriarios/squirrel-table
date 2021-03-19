@@ -93,6 +93,7 @@ dist/
 
 # Preferences
 preferences.json
+preferences.json*
 
 # Github token
 .github.json

@@ -232,32 +232,30 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
     case 'sqlDir':
       console.log('Dir Settings Saved');
       saveDirSettingsButton.text('Saved');
+      tryRefreshList();
       setTimeout(() => {
-        tryRefreshList();
         saveDirSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
-      }, 1000);
+      }, 500);
       break;
     case 'sql':
       console.log('SQL Settings Saved');
       saveSqlSettingsButton.text('Saved');
+      testSqlPrefs();
       setTimeout(() => {
-        testSqlPrefs();
         saveSqlSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
-      }, 1000);
+      }, 500);
       break;
     case 'sshEnabled':
       console.log('SSH Enabled Toggled');
-      setTimeout(() => {
-        testSshPrefs();
-      }, 1000);
+      testSshPrefs();
       break;
     case 'ssh':
       console.log('SSH Settings Saved');
       saveSshSettingsButton.text('Saved');
+      testSshPrefs();
       setTimeout(() => {
-        testSshPrefs();
         saveSshSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
-      }, 1000);
+      }, 500);
       break;
     default:
       showError('Undefined preferences set updated: ' + section);
