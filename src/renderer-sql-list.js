@@ -60,7 +60,9 @@ function showQuery() {
   selectedQuery.sql = '';
   selectedQuery.desc = '';
 
-  let sql = fs.readFileSync('sql/' + name + '.sql');
+  ipcRenderer.send('read-sql', name);
+}
+ipcRenderer.on('sql-read', (event, sql) => {
   let lines = sql.toString().split(/\r\n|\r|\n/);
   lines.forEach((line) => {
       if (line.substr(0,2) == '--') {
@@ -95,7 +97,7 @@ function showQuery() {
 
   runButton.attr('disabled', false);
   runButton.removeClass('disabled');
-}
+});
 
 try {
   setTimeout(() => {

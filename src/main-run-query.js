@@ -133,11 +133,7 @@ function runQuery(sql, callback) {
             display:       field.displayType
           });
         });
-        let response = {
-          results: results,
-          fields: parsedFields
-        };
-        callback(response);
+        callback(parsedFields, results);
       });
     });
   }
@@ -148,9 +144,9 @@ function runQuery(sql, callback) {
 
 ipcMain.on('run-query', (event, sql) => {
   messenger.sendStatus('Running Query');
-  sql = sql.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/(?:\")/g, '\'');
-  runQuery(sql, (response) => {
-    event.reply('query-result', response);
+  // sql = sql.replace(/(?:\r\n|\r|\n)/g, ' ');
+  runQuery(sql, (fields, results) => {
+    event.reply('query-result', fields, results);
   });
 })
 

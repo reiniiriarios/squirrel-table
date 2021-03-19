@@ -88,11 +88,11 @@ typings/
 # Electron-Forge
 out/
 
-# SQL
-sql/*.sql
-
-# SSH keys
-ssh/
-
 # Dist (too large for github)
 dist/
+
+# Preferences
+preferences.json
+
+# Github token
+.github.json

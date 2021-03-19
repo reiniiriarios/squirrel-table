@@ -243,21 +243,21 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
       console.log('SQL Settings Saved');
       saveSqlSettingsButton.text('Saved');
       setTimeout(() => {
-        tryRefreshList();
+        testSqlPrefs();
         saveSqlSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
       }, 1000);
       break;
     case 'sshEnabled':
       console.log('SSH Enabled Toggled');
       setTimeout(() => {
-        tryRefreshList();
+        testSshPrefs();
       }, 1000);
       break;
     case 'ssh':
       console.log('SSH Settings Saved');
       saveSshSettingsButton.text('Saved');
       setTimeout(() => {
-        tryRefreshList();
+        testSshPrefs();
         saveSshSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
       }, 1000);
       break;
@@ -267,13 +267,10 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
 });
 
 function tryRefreshList() {
-  console.log('Trying to refresh list');
-  console.log(preferences);
   let testDir = testDirPrefs();
   let testSql = testSqlPrefs();
   let testSsh = testSshPrefs();
   if (testDir && testSql && testSsh) {
-    console.log('Refreshing list');
     noQueriesMsg.css('display','none');
     clearCurrentQuery();
     listQueries();

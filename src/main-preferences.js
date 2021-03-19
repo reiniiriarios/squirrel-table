@@ -2,6 +2,7 @@ const { app, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const messenger = require(path.join(__dirname,'main-messaging.js'));
+const crypt = require(path.join(__dirname,'main-crypt.js'));
 
 let preferencesFile = path.join(__dirname,'../preferences.json');
 let preferences = {
@@ -42,6 +43,24 @@ exports.getSshPrivateKey = () => {
   }
 }
 
+async function encryptPrefs() {
+  let encryptedPrefs = preferences;
+  encryptedPrefs.ssh.user = await crypt.encrypt(preferences.ssh.user);
+  encryptedPrefs.ssh.pass = await crypt.encrypt(preferences.ssh.pass);
+  encryptedPrefs.sql.user = await crypt.encrypt(preferences.sql.user);
+  encryptedPrefs.sql.pass = await crypt.encrypt(preferences.sql.pass);
+  console.log(encryptedPrefs);
+  return encryptedPrefs;
+}
+async function decryptPrefs(encryptedPrefs) {
+  let decryptedPrefs = encryptedPrefs;
+  decryptedPrefs.ssh.user = await crypt.decrypt(encryptedPrefs.ssh.user);
+  decryptedPrefs.ssh.pass = await crypt.decrypt(encryptedPrefs.ssh.pass);
+  decryptedPrefs.sql.user = await crypt.decrypt(encryptedPrefs.sql.user);
+  decryptedPrefs.sql.pass = await crypt.decrypt(encryptedPrefs.sql.pass);
+  return decryptedPrefs;
+}
+
 function loadPreferences() {
   try {
     if (!fs.existsSync(preferencesFile)) {
@@ -54,7 +73,9 @@ function loadPreferences() {
         throw 'Unable to read preferences';
       }
       else {
-        preferences = newPrefs;
+        decryptPrefs(newPrefs).then(decryptedPrefs => {
+          preferences = decryptedPrefs;
+        });
       }
     }
   }
@@ -68,14 +89,16 @@ function loadPreferences() {
 }
 
 function writePreferences(callback) {
-  preferencesString = JSON.stringify(preferences, null, "\t");
-  fs.writeFile(preferencesFile, preferencesString, (error) => {
-    if (error) {
-      messenger.showError(error);
-    }
-    else {
-      callback();
-    }
+  encryptPrefs().then(encryptedPrefs => {
+    preferencesString = JSON.stringify(encryptedPrefs, null, "\t");
+    fs.writeFile(preferencesFile, preferencesString, (error) => {
+      if (error) {
+        messenger.showError(error);
+      }
+      else {
+        callback();
+      }
+    });
   });
 }
 

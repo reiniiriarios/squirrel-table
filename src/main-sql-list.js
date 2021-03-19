@@ -35,3 +35,13 @@ ipcMain.on('list-queries',(event) => {
     messenger.showError(error);
   }
 });
+
+ipcMain.on('read-sql', (event, name) => {
+  try {
+    let sql = fs.readFileSync(prefs.getPreferences('sqlDir') + name + '.sql');
+    event.reply('sql-read', sql);
+  }
+  catch (err) {
+    messenger.showError(err);
+  }
+});

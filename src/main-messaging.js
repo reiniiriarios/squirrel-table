@@ -4,7 +4,7 @@ const { BrowserWindow, ipcMain, dialog } = require('electron');
 module.exports.showError = (message) => {
     console.log(message);
     BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', message);
-    dialog.showErrorBox('Oops! Something went wrong.', message);
+    dialog.showErrorBox('Oops! Something went wrong.', message.toString());
 }
 
 // Status updates to renderer
@@ -14,5 +14,5 @@ module.exports.sendStatus = (status) => {
 }
 
 ipcMain.handle('show-error-dialog', (event, message) => {
-    dialog.showErrorBox('Oops! Something went wrong.', message);
+    dialog.showErrorBox('Oops! Something went wrong.', message.toString());
 });

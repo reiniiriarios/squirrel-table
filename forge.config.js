@@ -1,29 +1,58 @@
 const fs = require('fs');
-const zip = require('adm-zip');
-const pjson = require('./package.json');
+const githubjson = require('./.github.json');
 const sass = require('node-sass');
-
-function createFiles(path, callback) {
-  fs.copyFileSync('LICENSE', path + '/LICENSE');
-  fs.copyFileSync('README.md', path + '/README.md');
-  callback();
-}
 
 module.exports = {
   packagerConfig: {
-    "icon": "build/icons/icon.ico"
+    icon: "build/icons/icon.ico",
+    ignore: [
+      /^\/build/,
+      /^\/design/,
+      /^\/dist/,
+      /^\/scss/,
+      /\.gitignore/,
+      /\.github.json/,
+      /preferences\.json/,
+    ]
   },
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
       config: {
         name: "SquirrelTable",
-        iconUrl: "file:///c:/code/squirrel-table/build/icons/icon.ico"
+        iconUrl: "file:///c:/code/squirrel-table/build/icons/icon.ico",
+        setupExe: "SquirrelTableSetup.exe",
+        setupIcon: "build/icons/icon.ico",
+        noDelta: false,
+        remoteReleases: "https://github.com/reiniiriarios/squirrel-table",
+        remoteToken: githubjson.token,
+        // loadingGif: "",
+      }
+    },
+    {
+      name: '@electron-forge/maker-dmg',
+      config: {
+        title: "SquirrelTable",
+        icon: 'build/icons/icon.icns',
+        background: 'build/dmg-background.png', //inc @2x.png
+        format: 'ULFO', // macOS 10.11 or later
+        /*
+        "icon-size": 64,
+        window: {
+          position: { x, y },
+          size: { w, h }
+        },
+        */
+        contents: [
+          { "x": 448, "y": 344, "type": "link", "path": "/Applications" },
+          { "x": 192, "y": 344, "type": "file", "path": "SquirrelTable.app" }
+        ]
       }
     },
     {
       name: "@electron-forge/maker-zip",
       platforms: [
+        "win32",
         "darwin"
       ]
     },
@@ -38,37 +67,32 @@ module.exports = {
   ],
   hooks: {
     generateAssets: async (forgeConfig) => {
-      console.log('Compiling SCSS...');
-      sass.render({
+      await sass.render({
         file: 'scss/main.scss',
         outFile: 'src/style.css'
       }, (err, result) => {
-        if(!err){
+        if (err) {
+          console.log(err);
+        }
+        else {
           fs.writeFile('src/style.css', result.css, (err) => {
-            if(!err){
-              console.log('SCSS Compiled');
-            }
-            else {
+            if (err) {
               console.log(err);
             }
           });
         }
-        else {
-          console.log(err);
-        }
       });
     },
-    postMake: async (forgeConfig) => {
-      console.log('Zipping distributable...');
-      let name = 'SquirrelTable-win32-x64';
-      let dir = 'out/' + name;
-      let zipPathName = 'dist/' + name + '-' + pjson.version + '.zip';
-      createFiles(dir,() => {
-        let zipFile = new zip();
-        zipFile.addLocalFolder(dir, name);
-        zipFile.writeZip(zipPathName);
-        console.log('Distributable at "' + zipPathName + '"');
-      })
+    postPackage: async (forgeConfig, options) => {
+      await fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
+      await fs.copyFileSync('README.md', options.outputPaths[0] + '/README.md');
+      // windows tile here..?
+      if (options.spinner) {
+        options.spinner.info(`Packaged for ${options.platform} / ${options.arch} at ${options.outputPaths[0]}`);
+      }
+    },
+    postMake: async (makeResultObjects) => {
+      
     }
   }
 }

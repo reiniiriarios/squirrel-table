@@ -42,16 +42,11 @@ function runQuery() {
   updateStatus('Running Query');
   ipcRenderer.send('run-query', selectedQuery.sql);
 }
-ipcRenderer.on('query-result', (event, reponse) => {
-  if (reponse) {
-    updateStatus('Rendering Result');
-    selectedQuery.result = reponse.results;
-    selectedQuery.fields = reponse.fields;
-    displayResult();
-  }
-  else {
-    errorStatus('Empty Result');
-  }
+ipcRenderer.on('query-result', (event, fields, results) => {
+  updateStatus('Rendering Result');
+  selectedQuery.result = results;
+  selectedQuery.fields = fields;
+  displayResult();
   clearStatus();
   runButton.removeClass('running');
   runButton.attr('disabled', false);
