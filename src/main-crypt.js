@@ -3,12 +3,13 @@ const algorithm = 'aes-192-cbc';
 const secret = 's49t8hCTx3hniuc4';
 
 module.exports.encrypt = async (sourceString) => {
+  return new Promise((resolve, reject) => {
     sourceString = sourceString.normalize('NFC');
     let salt = crypto.randomBytes(8).toString('hex');
     crypto.scrypt(secret, salt, 24, (err, key) => {
-      if (err) throw err;
+      if (err) reject(err);
       crypto.randomFill(new Uint8Array(16), (err, iv) => {
-        if (err) throw err;
+        if (err) reject(err);
         let ivhex = iv.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
         let cipher = crypto.createCipheriv(algorithm, key, iv);
         let encrypted = '';
@@ -16,27 +17,29 @@ module.exports.encrypt = async (sourceString) => {
         cipher.on('data', (chunk) => encrypted += chunk);
         cipher.on('end', () => {
           let final = encrypted + '.' + salt + '.' + ivhex;
-          console.log(final);
-          return final;
+          resolve(final);
         });
         cipher.write(sourceString);
         cipher.end();
       });
     });
-  }
+  });
+}
 
-  module.exports.decrypt = async (encryptedString) => {
-    if (!encryptedString) return '';
+module.exports.decrypt = async (encryptedString) => {
+  return new Promise((resolve, reject) => {
+    if (!encryptedString) resolve('');
     let parts = encryptedString.split('.');
     let encrypted = parts[0];
     let salt      = parts[1];
     let ivhex     = parts[2];
     if (!ivhex) {
-        return encryptedString;
+      // assume unencrypted
+      resolve(encryptedString);
     }
     let iv = new Uint8Array(ivhex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
     crypto.scrypt(secret, salt, 24, (err, key) => {
-      if (err) throw err;
+      if (err) reject(err);
       let decipher = crypto.createDecipheriv(algorithm, key, iv);
       let decrypted = '';
       decipher.on('readable', () => {
@@ -45,9 +48,10 @@ module.exports.encrypt = async (sourceString) => {
         }
       });
       decipher.on('end', () => {
-        return decrypted;
+        resolve(decrypted);
       });
       decipher.write(encrypted, 'hex');
       decipher.end();
     });
-  }
+  });
+}

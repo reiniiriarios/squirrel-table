@@ -9,10 +9,20 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
+// Main process files used in main processes
+const messenger = require(path.join(__dirname,'main-messaging.js'));
+const prefs = require(path.join(__dirname,'main-preferences.js'));
+
 let mainWindow;
 
 // Some APIs can only be used after ready
 app.on('ready', function() {
+  prefs.loadPreferences().then((preferences) => {
+    createMainWindow();
+  });
+});
+
+function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 640,
@@ -44,7 +54,7 @@ app.on('ready', function() {
 
   // Load index
   mainWindow.loadFile(path.join(__dirname,'index.html'));
-});
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -84,9 +94,7 @@ ipcMain.on('init-variables', (event) => {
   event.reply('init-reply', data);
 });
 
-// Main Process Files
-require(path.join(__dirname,'main-messaging.js'));
-require(path.join(__dirname,'main-preferences.js'));
+// main process files that run when asked to by renderer
 require(path.join(__dirname,'main-sql-list.js'));
 require(path.join(__dirname,'main-run-query.js'));
 require(path.join(__dirname,'main-save-csv.js'));

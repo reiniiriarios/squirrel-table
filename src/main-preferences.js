@@ -49,7 +49,6 @@ async function encryptPrefs() {
   encryptedPrefs.ssh.pass = await crypt.encrypt(preferences.ssh.pass);
   encryptedPrefs.sql.user = await crypt.encrypt(preferences.sql.user);
   encryptedPrefs.sql.pass = await crypt.encrypt(preferences.sql.pass);
-  console.log(encryptedPrefs);
   return encryptedPrefs;
 }
 async function decryptPrefs(encryptedPrefs) {
@@ -61,7 +60,7 @@ async function decryptPrefs(encryptedPrefs) {
   return decryptedPrefs;
 }
 
-function loadPreferences() {
+exports.loadPreferences = async () => {
   try {
     if (!fs.existsSync(preferencesFile)) {
       throw 'Preferences file not found';
@@ -73,8 +72,9 @@ function loadPreferences() {
         throw 'Unable to read preferences';
       }
       else {
-        decryptPrefs(newPrefs).then(decryptedPrefs => {
+        await decryptPrefs(newPrefs).then(decryptedPrefs => {
           preferences = decryptedPrefs;
+          return preferences;
         });
       }
     }
@@ -82,30 +82,35 @@ function loadPreferences() {
   catch(error) {
     console.log(error);
     console.log('Resetting preferences');
-    writePreferences(() => {
+    writePreferences().then(() => {
       console.log('Preferences reset');
+      return preferences;
     });
   }
 }
 
-function writePreferences(callback) {
-  encryptPrefs().then(encryptedPrefs => {
-    preferencesString = JSON.stringify(encryptedPrefs, null, "\t");
+async function writePreferences(newPrefs) {
+  return new Promise((resolve, reject) => {
+    preferencesString = JSON.stringify(newPrefs, null, "\t");
     fs.writeFile(preferencesFile, preferencesString, (error) => {
       if (error) {
         messenger.showError(error);
+        reject(error);
       }
       else {
-        callback();
+        resolve();
       }
     });
   });
 }
 
-function updatePreferences(section, newPrefs, callback) {
+async function updatePreferences(section, newPrefs) {
+  return new Promise((resolve, reject) => {
     preferences[section] = newPrefs;
-    writePreferences(callback);
+    resolve();
+  });
 }
+
 ipcMain.on('update-preferences',(event, section, newPrefs) => {
   if (section == 'sqlDir' && newPrefs != '' && !fs.existsSync(newPrefs)) {
     event.reply('sql-dir-not-found');
@@ -114,7 +119,11 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
     event.reply('ssh-key-not-found');
   }
   else {
-    updatePreferences(section, newPrefs, () => {
+    updatePreferences(section, newPrefs).then(() => {
+      return encryptPrefs();
+    }).then((encryptedPrefs) => {
+      return writePreferences(encryptedPrefs);
+    }).then(() => {
       event.reply('preferences-updated', section, newPrefs);
     });
   }
@@ -123,8 +132,6 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
 ipcMain.on('get-preferences',(event, section) => {
   event.reply('reply-preferences',section,preferences[section]);
 });
-
-loadPreferences();
 
 ipcMain.on('ssh-choose-key',(event) => {
   dialog.showOpenDialog({
