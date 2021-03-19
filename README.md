@@ -16,11 +16,12 @@ todo
 
 `cd squirrel-table`
 
-To run:
+### To Run
 
 `npm start`
 
-To make:
+### To Make
+
 See `forge.config.js` for make settings
 
 `npm run make`
