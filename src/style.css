@@ -8,6 +8,9 @@
 *::before, *::after {
   box-sizing: border-box; }
 
+html {
+  background-color: #171e29; }
+
 body {
   margin: auto;
   padding: 0;
