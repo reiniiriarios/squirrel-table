@@ -61,32 +61,34 @@ async function decryptPrefs(encryptedPrefs) {
 }
 
 exports.loadPreferences = async () => {
-  try {
-    if (!fs.existsSync(preferencesFile)) {
-      throw 'Preferences file not found';
-    }
-    else {
-      let preferencesString = fs.readFileSync(preferencesFile);
-      let newPrefs = JSON.parse(preferencesString);
-      if (typeof preferences.ssh == 'undefined') {
-        throw 'Unable to read preferences';
+  return new Promise((resolve, reject) => {
+    try {
+      if (!fs.existsSync(preferencesFile)) {
+        throw 'Preferences file not found';
       }
       else {
-        await decryptPrefs(newPrefs).then(decryptedPrefs => {
-          preferences = decryptedPrefs;
-          return preferences;
-        });
+        let preferencesString = fs.readFileSync(preferencesFile);
+        let newPrefs = JSON.parse(preferencesString);
+        if (typeof preferences.ssh == 'undefined') {
+          throw 'Unable to read preferences';
+        }
+        else {
+          decryptPrefs(newPrefs).then(decryptedPrefs => {
+            preferences = decryptedPrefs;
+            resolve(preferences);
+          });
+        }
       }
     }
-  }
-  catch(error) {
-    console.log(error);
-    console.log('Resetting preferences');
-    writePreferences().then(() => {
-      console.log('Preferences reset');
-      return preferences;
-    });
-  }
+    catch(error) {
+      console.log(error);
+      console.log('Resetting preferences');
+      writePreferences().then(() => {
+        console.log('Preferences reset');
+        resolve(preferences);
+      });
+    }
+  });
 }
 
 async function writePreferences(newPrefs) {

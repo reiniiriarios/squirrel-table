@@ -100,8 +100,11 @@ ipcRenderer.on('sql-read', (event, sql) => {
 });
 
 try {
+  // there shouldn't need to be a timeout here, but let's play it safe
   setTimeout(() => {
-    if (testDirPrefs() && testSqlPrefs() && testSshPrefs()) {
+    testSqlPrefs();
+    testSshPrefs();
+    if (testDirPrefs()) {
       listQueries();
     }
   },500);

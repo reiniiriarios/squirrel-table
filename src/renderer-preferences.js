@@ -227,8 +227,6 @@ function closeStartSsh() {
 }
 
 ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
-  sqlList.text(' ');
-  noQueriesMsg.css('display','block');
   preferences[section] = newPrefs;
   switch (section) {
     case 'sqlDir':
