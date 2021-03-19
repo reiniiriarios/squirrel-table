@@ -12,6 +12,8 @@ todo
 
 ## Running & Making from Source
 
+todo
+
 `git clone https://github.com/reiniiriarios/squirrel-table.git`
 
 `cd squirrel-table`
@@ -27,4 +29,4 @@ See `forge.config.js` for make settings
 `npm run make`
 
 ## Why "SquirrelTable?"
-SQL...SQuireL :3
+SQL...SQuirreL :3
