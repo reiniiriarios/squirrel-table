@@ -13,6 +13,7 @@ module.exports = {
       /\.gitignore/,
       /\.github.json/,
       /preferences\.json/,
+      /imported_key/
     ]
   },
   makers: [

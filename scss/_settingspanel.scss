@@ -25,17 +25,18 @@
     padding: 20px;
     text-align: center;
   }
-  #dir-settings-panel {
+  #dir-settings-panel, #ssh-settings-panel, #sql-settings-panel, #general-settings-panel {
     display: none;
     padding: 16px;
   }
-  #ssh-settings-panel {
-    display: none;
-    padding: 16px;
-  }
-  #sql-settings-panel {
-    display: none;
-    padding: 16px;
+  #general-settings-panel {
+    & > div {
+      text-align: center;
+      label {
+        display: block;
+        margin-bottom: 16px;
+      }
+    }
   }
   #info-panel {
     display: none;

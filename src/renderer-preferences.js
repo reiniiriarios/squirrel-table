@@ -20,11 +20,14 @@ const sshChooseKeyButton = $('#ssh-choose-key');
 const saveSshSettingsButton = $('#save-ssh-settings-button');
 const sshErrorMsg = $('#ssh-error-msg');
 
+const importSettingsButton = $('#import-settings-button');
+const exportSettingsButton = $('#export-settings-button');
+
 const settingsPanels = {
   dir: {
     name:   'dir',
-    button:   $('#dir-settings-button'),
-    panel:    $('#dir-settings-panel'),
+    button: $('#dir-settings-button'),
+    panel:  $('#dir-settings-panel'),
     open:   false,
     toggle: () => {
       togglePanel(settingsPanels.dir);
@@ -32,8 +35,8 @@ const settingsPanels = {
   },
   ssh: {
     name:   'ssh',
-    button:   $('#ssh-settings-button'),
-    panel:    $('#ssh-settings-panel'),
+    button: $('#ssh-settings-button'),
+    panel:  $('#ssh-settings-panel'),
     open:   false,
     toggle: () => {
       togglePanel(settingsPanels.ssh);
@@ -41,23 +44,37 @@ const settingsPanels = {
   },
   sql: {
     name:   'sql',
-    button:   $('#sql-settings-button'),
-    panel:    $('#sql-settings-panel'),
+    button: $('#sql-settings-button'),
+    panel:  $('#sql-settings-panel'),
     open:   false,
     toggle: () => {
       togglePanel(settingsPanels.sql);
     }
   },
+  general: {
+    name:   'general',
+    button: $('#general-settings-button'),
+    panel:  $('#general-settings-panel'),
+    open:   false,
+    toggle: () => {
+      togglePanel(settingsPanels.general);
+    }
+  },
   info: {
     name:   'info',
-    button:   $('#info-button'),
-    panel:    $('#info-panel'),
+    button: $('#info-button'),
+    panel:  $('#info-panel'),
     open:   false,
     toggle: () => {
       togglePanel(settingsPanels.info);
     }
   }
 }
+settingsPanels.dir.button.on('click',settingsPanels.dir.toggle);
+settingsPanels.ssh.button.on('click',settingsPanels.ssh.toggle);
+settingsPanels.sql.button.on('click',settingsPanels.sql.toggle);
+settingsPanels.general.button.on('click',settingsPanels.general.toggle);
+settingsPanels.info.button.on('click',settingsPanels.info.toggle);
 
 let preferences = {};
 
@@ -87,10 +104,6 @@ function hideOpenSettings(keep) {
   });
 }
 
-settingsPanels.dir.button.on('click',settingsPanels.dir.toggle);
-settingsPanels.ssh.button.on('click',settingsPanels.ssh.toggle);
-settingsPanels.sql.button.on('click',settingsPanels.sql.toggle);
-settingsPanels.info.button.on('click',settingsPanels.info.toggle);
 function togglePanel(p) {
   if (p.open) {
     p.panel.css('display', 'none');
@@ -177,11 +190,24 @@ function testSshPrefs() {
     openStartSsh();
     return false;
   }
+  else if (preferences.ssh.key) {
+    ipcRenderer.send('test-ssh-key-file-exists', preferences.ssh.key);
+  }
   else {
     closeStartSsh();
     return true;
   }
 }
+ipcRenderer.on('test-ssh-key-file', (event, exists) => {
+  if (exists) {
+    closeStartSsh();
+    return true;
+  }
+  else {
+    openStartSsh();
+    return false;
+  }
+});
 
 function openStart() {
   startArea.css('display','block');
@@ -285,7 +311,7 @@ ipcRenderer.on('sql-dir-chosen',(event, filename) => {
 saveDirSettingsButton.on('click',() => {
   sqlList.text(' ');
   dirErrorMsg.text(' ');
-  saveDirSettingsButton.attr('disabled',true).addClass('disabled').text('...');
+  saveDirSettingsButton.attr('disabled',true).addClass('disabled').text('Saving');
   ipcRenderer.send('update-preferences','sqlDir', dirSql.val());
 });
 ipcRenderer.on('sql-dir-not-found',(event) => {
@@ -296,7 +322,7 @@ ipcRenderer.on('sql-dir-not-found',(event) => {
 });
 
 saveSqlSettingsButton.on('click',() => {
-  saveSqlSettingsButton.attr('disabled',true).addClass('disabled').text('...');
+  saveSqlSettingsButton.attr('disabled',true).addClass('disabled').text('Saving');
   let sqlSettings = {
     user: sqlUser.val(),
     pass: sqlPass.val(),
@@ -313,7 +339,7 @@ sshEnabled.on('click',() => {
 
 saveSshSettingsButton.on('click',() => {
   sshErrorMsg.text(' ');
-  saveSshSettingsButton.attr('disabled',true).addClass('disabled').text('...');
+  saveSshSettingsButton.attr('disabled',true).addClass('disabled').text('Saving');
   let sshSettings = {
     host: sshHost.val(),
     port: sshPort.val(),
@@ -340,3 +366,17 @@ ipcRenderer.on('ssh-key-chosen',(event, filename) => {
   }
 });
 
+importSettingsButton.on('click',(event) => {
+  importSettingsButton.attr('disabled',true).addClass('disabled').text('Importing');
+  ipcRenderer.send('import-settings');
+});
+ipcRenderer.on('settings-imported',() => {
+  importSettingsButton.attr('disabled',false).removeClass('disabled').text('Import');
+});
+exportSettingsButton.on('click',(event) => {
+  exportSettingsButton.attr('disabled',true).addClass('disabled').text('Saving');
+  ipcRenderer.send('export-settings');
+})
+ipcRenderer.on('settings-exported',() => {
+  exportSettingsButton.attr('disabled',false).removeClass('disabled').text('Export');
+});

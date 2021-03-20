@@ -102,6 +102,7 @@ out/
 # Preferences
 preferences.json
 preferences.json*
+imported_key
 
 # Github token
 .github.json

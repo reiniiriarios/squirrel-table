@@ -35,11 +35,17 @@ exports.getPreferences = (section=false) => {
 
 exports.getSshPrivateKey = () => {
   try {
-    let key = fs.readFileSync(preferences.ssh.key);
-    return key;
+    if (preferences.ssh.key) {
+      let key = fs.readFileSync(preferences.ssh.key);
+      return key;
+    }
+    else {
+      return false;
+    }
   }
   catch (error) {
     messenger.showError(error);
+    return false;
   }
 }
 
@@ -76,11 +82,12 @@ exports.loadPreferences = async () => {
           decryptPrefs(newPrefs).then(decryptedPrefs => {
             preferences = decryptedPrefs;
             resolve(preferences);
-          });
+          }).catch(err => { throw err; });
         }
       }
     }
     catch(error) {
+      messenger.showError('Error reading preferences, resetting to defaults.');
       console.log(error);
       console.log('Resetting preferences');
       writePreferences(preferences).then(() => {
@@ -101,7 +108,7 @@ async function writePreferences(newPrefs) {
         reject(error);
       }
       else {
-        resolve();
+        resolve(newPrefs);
       }
     });
   });
@@ -127,6 +134,13 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
     }).then(encryptedPrefs => {
       return writePreferences(encryptedPrefs);
     }).then(() => {
+      if (section == 'ssh' && newPrefs.key != 'imported_key' && fs.existsSync('imported_key')) {
+        fs.unlink('imported_key', (err) => {
+          if (err) {
+            messenger.showError('Error deleting previously imported key');
+          }
+        });
+      }
       event.reply('preferences-updated', section, newPrefs);
     }).catch(err => {
       messenger.showError(err);
@@ -164,5 +178,115 @@ ipcMain.on('choose-sql-dir',(event) => {
     if (!result.canceled) {
       event.reply('sql-dir-chosen',result.filePaths[0]);
     }
+  });
+});
+
+ipcMain.on('test-ssh-key-file-exists', (event, filePath) => {
+  let exists = fs.existsSync(filePath);
+  event.reply('test-ssh-key-file', exists);
+});
+
+ipcMain.on('import-settings',(event) => {
+  try {
+    dialog.showOpenDialog({
+      title: "Import Settings",
+      defaultPath : app.getPath('documents'),
+      buttonLabel : "Choose File",
+      filters :[
+          {name: 'JSON', extensions: ['json']},
+          {name: 'All Files', extensions: ['*']}
+      ]
+    }).then((result) => {
+      if (result.canceled) {
+        event.reply('settings-imported');
+      }
+      else {
+        readImportedPrefs(result.filePaths[0]).then(newPrefs => {
+          return writePreferences(newPrefs);
+        }).then(newPrefs => {
+          return decryptPrefs(newPrefs);
+        }).then(newPrefsDecrypted => {
+          preferences = newPrefsDecrypted;
+          event.reply('settings-imported');
+          event.reply('reply-preferences','sqlDir',newPrefsDecrypted.sqlDir);
+          event.reply('reply-preferences','sql',newPrefsDecrypted.sql);
+          event.reply('reply-preferences','sshEnabled',newPrefsDecrypted.sshEnabled);
+          event.reply('reply-preferences','ssh',newPrefsDecrypted.ssh);
+        }).catch(err => { throw err; });
+      }
+    });
+  }
+  catch (err) {
+    messenger.showError(err);
+    event.reply('settings-imported');
+  }
+});
+async function readImportedPrefs(filePath) {
+  return new Promise((resolve, reject) => {
+    try {
+      let importedPrefsString = fs.readFileSync(filePath);
+      let importedPrefs = JSON.parse(importedPrefsString);
+      let newPrefs = {...preferences, ...importedPrefs};
+      if (!newPrefs.ssh.encryptedKey) {
+        resolve(newPrefs);
+      }
+      else {
+        crypt.decrypt(newPrefs.ssh.encryptedKey).then(decryptedKey => {
+          newPrefs.ssh.key = 'imported_key';
+          newPrefs.ssh.encryptedKey = '';
+          fs.writeFile('imported_key', decryptedKey, (err) => {
+            if (err) throw err;
+            resolve(newPrefs);
+          });
+        }).catch(err => { throw err; });
+      }
+    }
+    catch {
+      reject(err);
+    }
+  });
+}
+
+ipcMain.on('export-settings',(event) => {
+  dialog.showSaveDialog(null, {
+    title: "Export Settings",
+    defaultPath : app.getPath('desktop') + '/preferences.json',
+    buttonLabel : "Save File",
+    filters :[
+      {name: 'JSON', extensions: ['json']},
+      {name: 'All Files', extensions: ['*']}
+    ]
+  }).then(result => {
+    if (result.canceled) {
+      event.reply('settings-exported');
+    }
+    else {
+      encryptPrefs(preferences).then(exportPrefs => {
+        if (preferences.ssh.key) {
+          fs.readFile(preferences.ssh.key, 'utf8', (err, key) => {
+            if (err) throw err;
+            crypt.encrypt(key).then((encryptedKey) => {
+              exportPrefs.ssh.encryptedKey = encryptedKey;
+              exportPrefs.ssh.key = '';
+              let exportPrefsString = JSON.stringify(exportPrefs,null,"\t");
+              fs.writeFile(result.filePath, exportPrefsString, (err) => {
+                if (err) throw err;
+                event.reply('settings-exported');
+              });
+            });
+          });
+        }
+        else {
+          let exportPrefsString = JSON.stringify(exportPrefs,null,"\t");
+          fs.writeFile(result.filePath, exportPrefsString, (err) => {
+            if (err) throw err;
+            event.reply('settings-exported');
+          });
+        }
+      });
+    }
+  }).catch(err => {
+    messenger.showError('Error Saving File: ' + err.toString());
+    event.reply('settings-exported'); // still replying because process is done
   });
 });

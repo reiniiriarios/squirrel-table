@@ -54,6 +54,14 @@
               <rect x="12.55" y="14.8" width="8.58" height="1.55"/>
             </svg>
           </li>
+          <li id="general-settings-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.94 25.96">
+              <path d="M25.94,15.21V11.07L23.09,9.59l-.42-1L23.75,5.4l-3-3-3.09,1-.94-.37L15.28,0H11L9.61,2.9l-1,.42L5.4,2.19l-3,3,1,3-.37,1L0,10.75v4.13l2.84,1.46.48,1L2.19,20.57l3,2.93,3.08-1,
+                1,.36L10.71,26h4.23l1.44-2.89.92-.42,3.25,1.12,3-3-1-3,.37-1ZM21.82,20.4,20.19,22,17.3,21l-2.09,1L14,24.4H11.65L10.3,21.71l-2.05-.83-2.64.87L4,20.13l1-2.9-.87-2L1.53,13.94V11.63L4.3,
+                10.3l.77-2.05-.88-2.7L5.82,3.94l2.85,1,2-.9,1.25-2.47h2.38l1.29,2.62,2,.81,2.71-.83L22,5.84,21,8.71l.87,2L24.4,12v2.38l-2.69,1.29-.77,2.06Z"/>
+              <path d="M13,6.94a6,6,0,1,0,6,6A6,6,0,0,0,13,6.94Zm0,10.77A4.74,4.74,0,1,1,17.7,13,4.74,4.74,0,0,1,13,17.71Z"/>
+            </svg>
+          </li>
           <li id="info-button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.94 24.94">
               <path d="M24.94,12.47A12.47,12.47,0,1,1,12.47,0,12.47,12.47,0,0,1,24.94,12.47ZM12.48,1.57a10.9,10.9,0,1,0,10.9,10.9A10.89,10.89,0,0,0,12.48,1.57Z"/>
@@ -149,6 +157,15 @@
             <button class="btn" id="save-ssh-settings-button">Save</button>
           </div>
           <div class="settings-error" id="ssh-error-msg"></div>
+        </div>
+
+        <div id="general-settings-panel">
+          <h2>Import/Export Settings</h2>
+          <div class="input-group">
+            <label>Importing will replace all settings. SSH Key will be included in export if set (encrypted).</label>
+            <button class="btn" id="import-settings-button">Import</button> &nbsp;
+            <button class="btn" id="export-settings-button">Export</button>
+          </div>
         </div>
 
         <div id="info-panel">
