@@ -4,26 +4,31 @@ const secret = 's49t8hCTx3hniuc4';
 
 module.exports.encrypt = async (sourceString) => {
   return new Promise((resolve, reject) => {
-    if (!sourceString) resolve('');
-    sourceString = sourceString.normalize('NFC');
-    let salt = crypto.randomBytes(8).toString('hex');
-    crypto.scrypt(secret, salt, 24, (err, key) => {
-      if (err) reject(err);
-      crypto.randomFill(new Uint8Array(16), (err, iv) => {
-        if (err) reject(err);
-        let ivhex = iv.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
-        let cipher = crypto.createCipheriv(algorithm, key, iv);
-        let encrypted = '';
-        cipher.setEncoding('hex');
-        cipher.on('data', (chunk) => encrypted += chunk);
-        cipher.on('end', () => {
-          let final = encrypted + '.' + salt + '.' + ivhex;
-          resolve(final);
+    try {
+      if (!sourceString) resolve('');
+      sourceString = sourceString.normalize('NFC');
+      let salt = crypto.randomBytes(8).toString('hex');
+      crypto.scrypt(secret, salt, 24, (err, key) => {
+        if (err) throw err;
+        crypto.randomFill(new Uint8Array(16), (err, iv) => {
+          if (err) throw err;
+          let ivhex = iv.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+          let cipher = crypto.createCipheriv(algorithm, key, iv);
+          let encrypted = '';
+          cipher.setEncoding('hex');
+          cipher.on('data', (chunk) => encrypted += chunk);
+          cipher.on('end', () => {
+            let final = encrypted + '.' + salt + '.' + ivhex;
+            resolve(final);
+          });
+          cipher.write(sourceString);
+          cipher.end();
         });
-        cipher.write(sourceString);
-        cipher.end();
       });
-    });
+    }
+    catch (err) {
+      reject(err);
+    }
   });
 }
 
