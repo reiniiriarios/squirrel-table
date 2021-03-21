@@ -10,10 +10,6 @@ releases coming soon
 
 to do
 
-## Known Issues
-
-* SQL syntax highlighter sometimes truncates code (does not effect running the query)
-
 ## To Do
 
 * Auto-refresh when files in directory change
@@ -31,13 +27,13 @@ After installing Node.js, if not installed:
 
 `npm install`
 
+See `forge.config.js` for settings. You'll need to edit as needed.
+
 ### To Run
 
 `npm start`
 
 ### To Make
-
-See `forge.config.js` for make settings
 
 `npm run make`
 

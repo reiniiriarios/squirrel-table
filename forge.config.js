@@ -24,10 +24,10 @@ module.exports = {
         iconUrl: "file:///c:/code/squirrel-table/build/icons/icon.ico",
         setupExe: "SquirrelTableSetup.exe",
         setupIcon: "build/icons/icon.ico",
-        noDelta: false,
+        noDelta: true,
         remoteReleases: "https://github.com/reiniiriarios/squirrel-table",
         remoteToken: githubjson.token,
-        // loadingGif: "",
+        loadingGif: "",
       }
     },
     {

@@ -38,8 +38,11 @@ ipcMain.on('list-queries',(event) => {
 
 ipcMain.on('read-sql', (event, name) => {
   try {
-    let sql = fs.readFileSync(prefs.getPreferences('sqlDir') + name + '.sql');
-    event.reply('sql-read', sql);
+    fs.readFile(path.join(prefs.getPreferences('sqlDir'), name + '.sql'), (err, sql) => {
+      if (err) throw err;
+      sql = sql.toString();
+      event.reply('sql-read', sql);
+    });
   }
   catch (err) {
     messenger.showError(err);
