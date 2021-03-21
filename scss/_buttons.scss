@@ -12,6 +12,10 @@
   border-radius: 16px;
   padding-bottom: 3px;
 
+  &.btn-wide {
+    width: 155px;
+  }
+
   &:after {
     background: $shinyColor;
     content: "";

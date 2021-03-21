@@ -160,7 +160,12 @@
         </div>
 
         <div id="general-settings-panel">
-          <h2>Import/Export Settings</h2>
+          <h2>Update App</h2>
+          <div class="input-group">
+            <button class="btn btn-wide" id="update-button">Check for Updates</button>
+          </div>
+          <div id="update-status">&nbsp;</div>
+          <h2 style="margin-top: 30px;">Import/Export Settings</h2>
           <div class="input-group">
             <label>Importing will replace all settings. SSH Key will be included in export if set (encrypted).</label>
             <button class="btn" id="import-settings-button">Import</button> &nbsp;
@@ -297,5 +302,6 @@
     <script src="renderer-preferences.js"></script>
     <script src="renderer-sql-list.js"></script>
     <script src="renderer-run-query.js"></script>
+    <script src="renderer-update.js"></script>
   </body>
 </html>

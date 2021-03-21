@@ -100,3 +100,4 @@ ipcMain.on('init-variables', (event) => {
 require(path.join(__dirname,'main-sql-list.js'));
 require(path.join(__dirname,'main-run-query.js'));
 require(path.join(__dirname,'main-save-csv.js'));
+require(path.join(__dirname,'main-update.js'));

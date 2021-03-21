@@ -11,7 +11,7 @@ module.exports = {
       /^\/dist/,
       /^\/scss/,
       /\.gitignore/,
-      /\.github.json/,
+      /\.github.*\.json/,
       /preferences\.json/,
       /imported_key/
     ]
@@ -64,6 +64,19 @@ module.exports = {
     {
       name: "@electron-forge/maker-rpm",
       config: {}
+    }
+  ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'reiniiriarios',
+          name: 'squirrel-table'
+        },
+        prerelease: true,
+        authToken: githubjson.token,
+      }
     }
   ],
   hooks: {
