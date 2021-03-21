@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const { Client } = require('ssh2');
 const ssh = new Client();
 const prefs = require(path.join(__dirname,'main-preferences.js'));
+const log = require('electron-log');
 
 preferences = prefs.getPreferences();
 
@@ -47,7 +48,6 @@ let dbssh = () => {
     return conn;
   }
   catch (error) {
-    console.log(error);
     throw error;
   }
 };

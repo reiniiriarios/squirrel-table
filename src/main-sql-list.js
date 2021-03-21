@@ -1,8 +1,8 @@
-const { ipcMain } = require('electron');
+const { BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const messenger = require(path.join(__dirname,'main-messaging.js'));
 const prefs = require(path.join(__dirname,'main-preferences.js'));
+const log = require('electron-log');
 
 ipcMain.on('list-queries',(event) => {
   try {
@@ -32,7 +32,8 @@ ipcMain.on('list-queries',(event) => {
     }
   }
   catch (error) {
-    messenger.showError(error);
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error);
+    log.error(error);
   }
 });
 
@@ -45,6 +46,7 @@ ipcMain.on('read-sql', (event, name) => {
     });
   }
   catch (err) {
-    messenger.showError(err);
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', err);
+    log.error(err);
   }
 });

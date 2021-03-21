@@ -1,9 +1,9 @@
-const { ipcMain } = require('electron');
+const { BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const prefs = require(path.join(__dirname,'main-preferences.js'));
-const messenger = require(path.join(__dirname,'main-messaging.js'));
 const dbssh = require(path.join(__dirname,'main-db-ssh.js'));
 const db = require(path.join(__dirname,'main-db.js'));
+const log = require('electron-log');
 
 const columnTypes = {
   MYSQL_TYPE_DECIMAL:     0,
@@ -66,20 +66,17 @@ let connection = preferences.sshEnabled ? dbssh : db;
 
 function runQuery(sql, callback) {
   if (preferences.sshEnabled) {
-    messenger.sendStatus('Connecting Over SSH');
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Connecting Over SSH');
   }
   else {
-    messenger.sendStatus('Connecting to Database');
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Connecting to Database');
   }
   try {
     connection().then(function(connection){
       // query database 
-      messenger.sendStatus('Executing Query');
+      BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Executing Query');
       connection.query({sql: sql,rowsAsArray: true}, (error, results, fields) => {
-        if (error) {
-          messenger.showError(error);
-          return;
-        }
+        if (error) throw error;
         parsedFields = [];
         fields.forEach((field) => {
           switch (field.columnType) {
@@ -139,15 +136,16 @@ function runQuery(sql, callback) {
         });
         callback(parsedFields, results);
       });
-    });
+    }).catch(err => { throw err });
   }
   catch (error) {
-    messenger.showError(error);
+    log.error(error);
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error);
   }
 }
 
 ipcMain.on('run-query', (event, sql) => {
-  messenger.sendStatus('Running Query');
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Running Query');
   // sql = sql.replace(/(?:\r\n|\r|\n)/g, ' ');
   runQuery(sql, (fields, results) => {
     event.reply('query-result', fields, results);

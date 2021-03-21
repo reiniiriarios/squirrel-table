@@ -1,13 +1,14 @@
 const { BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 // const messenger = require(path.join(__dirname,'main-messaging.js'));
+const log = require('electron-log');
 
 autoUpdater.channel = 'latest';
 autoUpdater.allowDowngrade = false;
 
-//autoUpdater.logger = logger;
-//autoUpdater.logger.transports.file.level = 'debug';
-//autoUpdater.logger.transports.file.appName = 'squirrel-table';
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+autoUpdater.logger.transports.file.appName = 'squirrel-table';
 autoUpdater.autoDownload = false;
 
 autoUpdater.on('update-downloaded', (info) => {
@@ -37,13 +38,11 @@ autoUpdater.on('download-progress', (progressObj) => {
 });
 
 const updateError = (error) => {
-  console.log(error);
   BrowserWindow.fromId(global.mainWindowId).webContents.send('update-error', error);
 };
 // The following is being triggered on top of updateError() already called in .catch
 autoUpdater.on('error', (error) => {
-  //autoUpdater.logger.debug(error);
-  updateError(error);
+  // updateError(error);
 });
 
 ipcMain.on('check-for-updates',(event) => {

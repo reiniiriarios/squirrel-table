@@ -1,13 +1,12 @@
-const { app, ipcMain, dialog } = require('electron');
+const { BrowserWindow, app, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const csvStringify = require('csv-stringify');
-const messenger = require(path.join(__dirname,'main-messaging.js'));
   
 function array2csv(data, callback) {
   csvStringify(data, (err, csvString) => {
     if (err) {
-      messenger.showError('CSV Stringify Error: ' + err.toString());
+      log.error(err);
       return false;
     }
     callback(csvString);
@@ -15,7 +14,7 @@ function array2csv(data, callback) {
 }
 
 function saveCsvString(csvString, defaultName, callback) {
-  messenger.sendStatus('Saving File');
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Saving File');
   dialog.showSaveDialog(null, {
     title: "Save CSV",
     defaultPath : app.getPath('desktop') + '/' + defaultName + '.csv',
@@ -26,21 +25,23 @@ function saveCsvString(csvString, defaultName, callback) {
     ]
   }).then(result => {
     if (result.canceled) callback(false);
-    messenger.sendStatus('Saving File to ' + result.filePath);
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Writing File');
     fs.writeFile(result.filePath, csvString, (err) => {
       if (err) {
-        messenger.showError('Error Writing File: ' + err.toString());
+        log.error(err);
+        BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', 'Error Writing File');
       }
       callback(result.filePath);
     });
   }).catch(err => {
-    messenger.showError('Error Saving File: ' + err.toString());
+    log.error(err);
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', 'Error Saving File');
     callback(false);
   });
 }
 
 ipcMain.on('save-csv', (event, name, fields, result) => {
-  messenger.sendStatus('Saving File');
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Saving File');
   let head = [];
   fields.forEach((column) => {
     head.push(column.name);
@@ -58,7 +59,7 @@ ipcMain.on('save-csv', (event, name, fields, result) => {
     let filename = name + '-' + cY + cM + cD + '-' + cH + cN + cS;
     saveCsvString(csvString, filename, (location) => {
       if (location) {
-        messenger.sendStatus('Saved to ' + location);
+        BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'File Saved');
       }
       event.reply('csv-saved', true);
     });

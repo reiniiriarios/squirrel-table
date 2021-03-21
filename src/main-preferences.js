@@ -1,7 +1,7 @@
 const { app, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const messenger = require(path.join(__dirname,'main-messaging.js'));
+const log = require('electron-log');
 const crypt = require(path.join(__dirname,'main-crypt.js'));
 
 let preferencesFile = path.join(__dirname,'../preferences.json');
@@ -44,7 +44,7 @@ exports.getSshPrivateKey = () => {
     }
   }
   catch (error) {
-    messenger.showError(error);
+    log.error(error);
     return false;
   }
 }
@@ -87,14 +87,12 @@ exports.loadPreferences = async () => {
       }
     }
     catch(error) {
-      messenger.showError('Error reading preferences, resetting to defaults.');
-      console.log(error);
-      console.log('Resetting preferences');
+      log.error('Error reading preferences, resetting to defaults.');
       writePreferences(preferences).then(() => {
-        console.log('Preferences reset');
+        log.info('Preferences reset');
         resolve(preferences);
       }).catch(err => {
-        messenger.showError(err);
+        log.error(err);
       });
     }
   });
@@ -137,13 +135,13 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
       if (section == 'ssh' && newPrefs.key != 'imported_key' && fs.existsSync('imported_key')) {
         fs.unlink('imported_key', (err) => {
           if (err) {
-            messenger.showError('Error deleting previously imported key');
+            log.error(err);
           }
         });
       }
       event.reply('preferences-updated', section, newPrefs);
     }).catch(err => {
-      messenger.showError(err);
+      log.error(err);
     });
   }
 });
@@ -217,7 +215,7 @@ ipcMain.on('import-settings',(event) => {
     });
   }
   catch (err) {
-    messenger.showError(err);
+    log.error(err);
     event.reply('settings-imported');
   }
 });
@@ -286,7 +284,7 @@ ipcMain.on('export-settings',(event) => {
       });
     }
   }).catch(err => {
-    messenger.showError('Error Saving File: ' + err.toString());
+    log.error(err);
     event.reply('settings-exported'); // still replying because process is done
   });
 });

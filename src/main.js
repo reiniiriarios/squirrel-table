@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu, globalShortcut } = require('electron');
 const path = require('path');
+const log = require('electron-log');
 
 // Remove menu toolbar
 Menu.setApplicationMenu(false);
@@ -10,7 +11,6 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 // Main process files used in main processes
-const messenger = require(path.join(__dirname,'main-messaging.js'));
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 
 let mainWindow;
@@ -27,7 +27,7 @@ app.on('ready', function() {
     
     createMainWindow();
   }).catch(err => {
-    messenger.showError(err);
+    log.error(err);
   });
 });
 
@@ -101,4 +101,8 @@ ipcMain.on('init-variables', (event) => {
     resources: process.resourcesPath
   };
   event.reply('init-reply', data);
+});
+
+ipcMain.handle('log-error', (event, message) => {
+  log.error(message);
 });

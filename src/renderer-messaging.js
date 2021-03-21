@@ -1,10 +1,8 @@
 const showError = (message) => {
-  console.log(message);
   errorStatus(message);
-  ipcRenderer.send('show-error-dialog', message);
+  ipcRenderer.send('log-error', message);
 }
 function updateStatus(status) {
-  console.log(status);
   statusText.text(status);
 }
 function errorStatus(status) {

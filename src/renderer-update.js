@@ -41,7 +41,6 @@ ipcRenderer.on('update-downloaded',(event) => {
 });
 ipcRenderer.on('update-error',(event, error) => {
   updateProgress = false;
-  console.log(error);
   updateButton.attr('disabled',false).removeClass('disabled').text('Check for Updates');
   updateStatusMsg.html('<span class="error">Error updating, see log for details</span>');
 });
