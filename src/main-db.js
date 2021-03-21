@@ -6,24 +6,21 @@ preferences = prefs.getPreferences();
 
 let db = () => {
   try {
-    connection = mysql.createConnection({
-      host     : preferences.sql.host,
-      user     : preferences.sql.user,
-      password : preferences.sql.pass, 
-      database : preferences.sql.db,
-      stream: stream
+    let conn = new Promise((resolve, reject) => {
+      connection = mysql.createConnection({
+        host     : preferences.sql.host,
+        user     : preferences.sql.user,
+        password : preferences.sql.pass, 
+        database : preferences.sql.db
+      });
+      connection.connect((err) => {
+        if (err) reject(err);
+        else resolve(connection);
+      });
     });
-    connection.connect((err) => {
-      if (!err) {
-        resolve(connection);
-      } else {
-        reject(err);
-      }
-    });
-    return connection;
+    return conn;
   }
   catch (error) {
-    console.log(error);
     throw error;
   }
 };

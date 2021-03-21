@@ -18,6 +18,13 @@ let mainWindow;
 // Some APIs can only be used after ready
 app.on('ready', function() {
   prefs.loadPreferences().then((preferences) => {
+    // main process files that run when asked to by renderer
+    // these files require preferences to be set
+    require(path.join(__dirname,'main-sql-list.js'));
+    require(path.join(__dirname,'main-run-query.js'));
+    require(path.join(__dirname,'main-save-csv.js'));
+    require(path.join(__dirname,'main-update.js'));
+    
     createMainWindow();
   }).catch(err => {
     messenger.showError(err);
@@ -95,9 +102,3 @@ ipcMain.on('init-variables', (event) => {
   };
   event.reply('init-reply', data);
 });
-
-// main process files that run when asked to by renderer
-require(path.join(__dirname,'main-sql-list.js'));
-require(path.join(__dirname,'main-run-query.js'));
-require(path.join(__dirname,'main-save-csv.js'));
-require(path.join(__dirname,'main-update.js'));

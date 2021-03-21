@@ -65,13 +65,17 @@ preferences = prefs.getPreferences();
 let connection = preferences.sshEnabled ? dbssh : db;
 
 function runQuery(sql, callback) {
-  messenger.sendStatus('Connecting Over SSH');
+  if (preferences.sshEnabled) {
+    messenger.sendStatus('Connecting Over SSH');
+  }
+  else {
+    messenger.sendStatus('Connecting to Database');
+  }
   try {
     connection().then(function(connection){
       // query database 
       messenger.sendStatus('Executing Query');
       connection.query({sql: sql,rowsAsArray: true}, (error, results, fields) => {
-        console.log(fields);
         if (error) {
           messenger.showError(error);
           return;
