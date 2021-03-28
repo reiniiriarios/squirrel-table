@@ -2,10 +2,9 @@ const path = require('path');
 const mysql = require('mysql2');
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 
-preferences = prefs.getPreferences();
-
 let db = () => {
   try {
+    let preferences = prefs.getPreferences();
     let conn = new Promise((resolve, reject) => {
       connection = mysql.createConnection({
         host     : preferences.sql.host,

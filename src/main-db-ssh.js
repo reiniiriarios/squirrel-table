@@ -6,8 +6,6 @@ const ssh = new Client();
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 const log = require('electron-log');
 
-preferences = prefs.getPreferences();
-
 // todo:
 // ssh.dispose();
 
@@ -15,6 +13,7 @@ let dbssh = () => {
   try {
     let conn = new Promise((resolve, reject) => {
       try {
+        let preferences = prefs.getPreferences();
         ssh.on('ready', () => {
           ssh.forwardOut(
             '127.0.0.1',
