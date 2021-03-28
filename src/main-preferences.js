@@ -74,11 +74,11 @@ async function encryptPrefs() {
     preferencesEncrypted.ssh.pass = await crypt.encrypt(preferences.ssh.pass).catch(err => { throw err });
     preferencesEncrypted.sql.user = await crypt.encrypt(preferences.sql.user).catch(err => { throw err });
     preferencesEncrypted.sql.pass = await crypt.encrypt(preferences.sql.pass).catch(err => { throw err });
+    return false;
   }
   catch (err) {
     return err;
   }
-  return false;
 }
 async function decryptPrefs() {
   try {
@@ -86,11 +86,11 @@ async function decryptPrefs() {
     preferences.ssh.pass = await crypt.decrypt(preferencesEncrypted.ssh.pass).catch(err => { throw err });
     preferences.sql.user = await crypt.decrypt(preferencesEncrypted.sql.user).catch(err => { throw err });
     preferences.sql.pass = await crypt.decrypt(preferencesEncrypted.sql.pass).catch(err => { throw err });
+    return false;
   }
   catch (err) {
     return err;
   }
-  return false;
 }
 
 exports.loadPreferences = async () => {
@@ -107,7 +107,7 @@ exports.loadPreferences = async () => {
         }
         else {
           preferences = JSON.parse(preferencesString);
-          decryptPrefs().then((err) => {
+          decryptPrefs().then(err => {
             if (err) reject(err);
             else resolve();
           });
@@ -141,13 +141,6 @@ async function writePreferences() {
   });
 }
 
-async function updatePreferences(section, updatePrefs) {
-  return new Promise((resolve, reject) => {
-    preferences[section] = updatePrefs;
-    resolve();
-  });
-}
-
 ipcMain.on('update-preferences',(event, section, newPrefs) => {
   if (section == 'sqlDir' && newPrefs != '' && !fs.existsSync(newPrefs)) {
     event.reply('sql-dir-not-found');
@@ -157,11 +150,11 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
   }
   else {
     try {
-      updatePreferences(section, newPrefs).then(() => {
-        return encryptPrefs();
-      }).then(err => {
+      preferences[section] = JSON.parse(JSON.stringify(newPrefs));
+      preferencesEncrypted[section] = JSON.parse(JSON.stringify(newPrefs));
+      encryptPrefs().then(err => {
         if (err) throw err;
-        else return writePreferences();
+        return writePreferences();
       }).then(() => {
         if (section == 'ssh' && preferences.ssh.key != importedKeyFile && fs.existsSync(importedKeyFile)) {
           fs.unlink(importedKeyFile, (err) => {
@@ -171,8 +164,6 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
           });
         }
         event.reply('preferences-updated', section, preferences[section]);
-      }).catch(err => {
-        throw err;
       });
     }
     catch (err) {
@@ -272,7 +263,7 @@ async function readImportedPrefs(filePath) {
             if (err) throw err;
             resolve();
           });
-        }).catch(err => { throw err; });
+        });
       }
     }
     catch {
@@ -282,6 +273,7 @@ async function readImportedPrefs(filePath) {
 }
 
 ipcMain.on('export-settings',(event) => {
+  try {
   dialog.showSaveDialog(null, {
     title: "Export Settings",
     defaultPath : path.join(app.getPath('desktop'), 'preferences.json'),
@@ -296,7 +288,8 @@ ipcMain.on('export-settings',(event) => {
     }
     else {
       // only export these sections (and ssh key, encrypted separately)
-      encryptPrefs().then(() => {
+      encryptPrefs().then(err => {
+        if (err) throw err;
         let preferencesLimited = {
           sql: preferencesEncrypted.sql,
           ssh: preferencesEncrypted.ssh,
@@ -325,8 +318,10 @@ ipcMain.on('export-settings',(event) => {
         }
       });
     }
-  }).catch(err => {
+  }).catch(err => { throw err });
+  }
+  catch (err) {
     log.error(err); // handle better
     event.reply('settings-exported'); // still need to reply because process is done
-  });
+  }
 });
