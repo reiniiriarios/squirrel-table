@@ -44,6 +44,10 @@ let dbssh = () => {
             }
           });
         });
+        ssh.on('error', error => {
+          log.error(error);
+          BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
+        });
         ssh.connect({
           host: preferences.ssh.host,
           port: preferences.ssh.port,
