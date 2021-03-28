@@ -20,7 +20,7 @@
     "name": "Emma Litwa-Vulcu",
     "email": "80431903+reiniiriarios@users.noreply.github.com"
   },
-  "license": "GNU GPL-3.0",
+  "license": "GPL-3.0-or-later",
   "config": {
     "forge": "forge.config.js"
   },
