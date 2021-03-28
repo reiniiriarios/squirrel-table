@@ -45,7 +45,23 @@ let dbssh = () => {
         });
         ssh.on('error', error => {
           log.error(error);
-          BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
+          if (typeof error.code != 'undefined') {
+            let msg;
+            switch (error.code) {
+              case 'ENOTFOUND':
+                msg = 'Host not found';
+                break;
+              case 'ETIMEDOUT':
+                msg = 'Connection timed out';
+                break;
+              default:
+                msg = error.message;
+            }
+            BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', msg);
+          }
+          else {
+            BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
+          }
         });
         ssh.connect({
           host: preferences.ssh.host,
