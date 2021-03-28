@@ -7,6 +7,7 @@ function updateStatus(status) {
 }
 function errorStatus(status) {
   statusText.html('<span class="err">' + status + '</span>');
+  runButton.removeClass('running').attr('disabled', false);
 }
 function clearStatus(timeout=2000) {
   setTimeout(() => {

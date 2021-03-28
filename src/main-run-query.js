@@ -135,12 +135,18 @@ function runQuery(sql, callback) {
           });
         });
         callback(parsedFields, results);
-      }).catch(err => { throw err });
-    }).catch(err => { throw err });
+      }).catch(err => {
+        log.error(err);
+        BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', err.message);
+      });
+    }).catch(err => {
+      log.error(err);
+      BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', err.message);
+    });
   }
   catch (error) {
     log.error(error);
-    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error);
+    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
   }
 }
 

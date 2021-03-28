@@ -24,21 +24,17 @@ function displayResult() {
     tbody.appendChild(tr);
   });
 
-  result.css('display', 'block');
-  result.append(table);
+  result.css('display', 'block').append(table);
   updateStatus('Done');
-  saveButton.attr('disabled', false);
-  saveButton.css('display', 'inline-block');
+  saveButton.attr('disabled', false).css('display', 'inline-block');
 }
 
 runButton.on('click',runQuery);
 function runQuery() {
   if (this.disabled == true) return false;
   clearResult();
-  saveButton.attr('disabled', true);
-  saveButton.css('display', 'none');
-  runButton.addClass('running');
-  runButton.attr('disabled', true);
+  saveButton.attr('disabled', true).css('display', 'none');
+  runButton.addClass('running').attr('disabled', true);
   updateStatus('Running Query');
   ipcRenderer.send('run-query', selectedQuery.sql);
 }
@@ -48,8 +44,7 @@ ipcRenderer.on('query-result', (event, fields, results) => {
   selectedQuery.fields = fields;
   displayResult();
   clearStatus();
-  runButton.removeClass('running');
-  runButton.attr('disabled', false);
+  runButton.removeClass('running').attr('disabled', false);
 });
 
 saveButton.on('click',saveCSV);
