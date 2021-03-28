@@ -3,8 +3,6 @@ const path = require('path');
 const githubjson = require('./.github.json');
 const sass = require('node-sass');
 const yaml = require('js-yaml');
-// const { resolve } = require('path');
-// const { rejects } = require('assert');
 
 module.exports = {
   packagerConfig: {
@@ -62,14 +60,6 @@ module.exports = {
         "win32",
         "darwin"
       ]
-    },
-    {
-      name: "@electron-forge/maker-deb",
-      config: {}
-    },
-    {
-      name: "@electron-forge/maker-rpm",
-      config: {}
     }
   ],
   publishers: [
@@ -110,15 +100,15 @@ module.exports = {
       });
     },
     postPackage: async (forgeConfig, options) => {
-      fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
-      fs.copyFileSync('README.md', options.outputPaths[0] + '/README.md');
+      await fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
+      await fs.copyFileSync('README.md', options.outputPaths[0] + '/README.md');
 
       // windows tile here..?
       // can create in correct dir, but after install will be in wrong dir
       // how to move from app.getPath('appData')/app-x.x.x/ to app.getPath('appData')...?
       // does it need to move..?
 
-      if (options.spinner) {
+      if (typeof options.spinner.info != 'undefined') {
         options.spinner.info(`Packaged for ${options.platform} / ${options.arch} at ${options.outputPaths[0]}`);
       }
 
