@@ -7,6 +7,9 @@ const log = require('electron-log');
 
 preferences = prefs.getPreferences();
 
+// todo:
+// ssh.dispose();
+
 let dbssh = () => {
   try {
     let conn = new Promise((resolve, reject) => {
@@ -38,7 +41,8 @@ let dbssh = () => {
             });
           }
         });
-      }).connect({
+      });
+      ssh.connect({
         host: preferences.ssh.host,
         port: preferences.ssh.port,
         username: preferences.ssh.user,

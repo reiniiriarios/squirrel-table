@@ -72,7 +72,7 @@ function runQuery(sql, callback) {
     BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Connecting to Database');
   }
   try {
-    connection().then(function(connection){
+    connection().then(connection => {
       // query database 
       BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Executing Query');
       connection.query({sql: sql,rowsAsArray: true}, (error, results, fields) => {
@@ -135,7 +135,7 @@ function runQuery(sql, callback) {
           });
         });
         callback(parsedFields, results);
-      });
+      }).catch(err => { throw err });
     }).catch(err => { throw err });
   }
   catch (error) {
