@@ -1,5 +1,4 @@
-const { BrowserWindow, ipcMain } = require('electron');
-const { autoUpdater } = require('electron-updater');
+const { BrowserWindow, ipcMain, autoUpdater } = require('electron');
 // const messenger = require(path.join(__dirname,'main-messaging.js'));
 const log = require('electron-log');
 
