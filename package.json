@@ -27,6 +27,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "csv": "^5.4.0",
+    "electron-forge-publisher-local": "^0.1.0",
     "electron-log": "^4.3.2",
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^4.3.8",
