@@ -4,7 +4,8 @@ const fs = require('fs');
 const log = require('electron-log');
 const crypt = require(path.join(__dirname,'main-crypt.js'));
 
-let preferencesFile = path.join(__dirname,'../preferences.json');
+let preferencesFile = path.join(app.getPath('userData'), 'preferences.json');
+let importedKeyFile = path.join(app.getPath('userData'), 'imported_key');
 let preferences = {
   sqlDir: false,
   sshEnabled: false,
@@ -132,8 +133,8 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
     }).then(encryptedPrefs => {
       return writePreferences(encryptedPrefs);
     }).then(() => {
-      if (section == 'ssh' && newPrefs.key != 'imported_key' && fs.existsSync('imported_key')) {
-        fs.unlink('imported_key', (err) => {
+      if (section == 'ssh' && newPrefs.key != importedKeyFile && fs.existsSync(importedKeyFile)) {
+        fs.unlink(importedKeyFile, (err) => {
           if (err) {
             log.error(err);
           }
@@ -230,9 +231,9 @@ async function readImportedPrefs(filePath) {
       }
       else {
         crypt.decrypt(newPrefs.ssh.encryptedKey).then(decryptedKey => {
-          newPrefs.ssh.key = 'imported_key';
+          newPrefs.ssh.key = importedKeyFile;
           newPrefs.ssh.encryptedKey = '';
-          fs.writeFile('imported_key', decryptedKey, (err) => {
+          fs.writeFile(importedKeyFile, decryptedKey, (err) => {
             if (err) throw err;
             resolve(newPrefs);
           });
@@ -248,7 +249,7 @@ async function readImportedPrefs(filePath) {
 ipcMain.on('export-settings',(event) => {
   dialog.showSaveDialog(null, {
     title: "Export Settings",
-    defaultPath : app.getPath('desktop') + '/preferences.json',
+    defaultPath : path.join(app.getPath('desktop'), 'preferences.json'),
     buttonLabel : "Save File",
     filters :[
       {name: 'JSON', extensions: ['json']},

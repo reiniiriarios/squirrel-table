@@ -38,6 +38,7 @@ ipcRenderer.on('sql-list',(event,sqlfiles) => {
       closeStartDir();
       noQueriesMsg.css('display','none');
     });
+    console.log(sqlfiles);
   }
   else {
     openStartDir();

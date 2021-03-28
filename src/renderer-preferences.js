@@ -130,7 +130,9 @@ ipcRenderer.on('reply-preferences',(event, section, newPrefs) => {
   switch (section) {
     case 'sqlDir':
       dirSql.val(newPrefs);
-      testDirPrefs();
+      if (testDirPrefs()) {
+        listQueries();
+      }
       break;
     case 'sql':
       sqlUser.val(newPrefs.user);

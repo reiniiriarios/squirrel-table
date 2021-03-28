@@ -109,3 +109,6 @@ imported_key
 
 # css, compiled at runtime
 src/style.css
+
+# dist
+dist/

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu, globalShortcut } = require('electron');
 const path = require('path');
 const log = require('electron-log');
+// log. error, warn, info, verbose, debug, silly
 
 // Remove menu toolbar
 Menu.setApplicationMenu(false);

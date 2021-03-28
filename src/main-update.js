@@ -10,25 +10,38 @@ autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.logger.transports.file.appName = 'squirrel-table';
 autoUpdater.autoDownload = false;
+// autoUpdater.setFeedURL('http://127.0.0.1:8080');
 
-autoUpdater.on('update-downloaded', (info) => {
-  console.log(info);
-  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-downloaded');
+const updateError = (error) => {
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-error', error);
+};
+// The following is triggered on top of updateError() already called in .catch
+autoUpdater.on('error', (error) => {
+  // updateError(error);
 });
-
 /*
 autoUpdater.on('checking-for-update', () => {
 });
 */
 autoUpdater.on('update-available', (info) => {
-  console.log(info);
-  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-available');
+  // info = json obj of latest.yml
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-available', info);
 });
 autoUpdater.on('update-not-available', (info) => {
-  console.log(info);
+  // info = json obj of latest.yml
   BrowserWindow.fromId(global.mainWindowId).webContents.send('update-not-available');
 });
 
+ipcMain.on('check-for-updates',(event) => {
+  autoUpdater.checkForUpdates().catch(err => { updateError(err) });
+});
+
+/*
+STOP: Cannot continue with autoupdater without digitally signing updates
+
+ipcMain.on('download-update',(event) => {
+  autoUpdater.downloadUpdate().catch(err => { updateError(err) });
+})
 autoUpdater.on('download-progress', (progressObj) => {
   // progressObj.bytesPerSecond
   //            .percent
@@ -36,21 +49,11 @@ autoUpdater.on('download-progress', (progressObj) => {
   //            .total
   BrowserWindow.fromId(global.mainWindowId).webContents.send('download-progress', progressObj);
 });
-
-const updateError = (error) => {
-  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-error', error);
-};
-// The following is being triggered on top of updateError() already called in .catch
-autoUpdater.on('error', (error) => {
-  // updateError(error);
+autoUpdater.on('update-downloaded', (info) => {
+  // info = json obj of latest.yml
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('update-downloaded');
 });
-
-ipcMain.on('check-for-updates',(event) => {
-  autoUpdater.checkForUpdates().catch(err => { updateError(err) });
-});
-ipcMain.on('download-update',(event) => {
-  autoUpdater.downloadUpdate().catch(err => { updateError(err) });
-})
 ipcMain.on('update-app',(event) => {
   autoUpdater.quitAndInstall().catch(err => { updateError(err) });
 });
+*/

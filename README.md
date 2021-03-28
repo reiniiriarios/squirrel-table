@@ -4,7 +4,10 @@ SquirrelTable is a desktop application that can run MySQL queries over SSH and g
 
 ## Releases
 
-releases coming soon
+### Latest Release
+
+* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.4.0/SquirrelTableSetup.exe)
+* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.4.0/SquirrelTable-win32-x64-0.4.0.zip)
 
 ## Getting Started
 
@@ -17,9 +20,9 @@ to do
 
 ## Running & Making from Source
 
-SquirrelTable is built in [Node.js](https://nodejs.org/) on [Electron](https://www.electronjs.org/) with [Electron Forge](https://www.electronforge.io/).
+SquirrelTable is built on [Node.js](https://nodejs.org/) with [Electron](https://www.electronjs.org/) using [Electron Forge](https://www.electronforge.io/).
 
-After installing Node.js, if not installed:
+After installing Node.js, if not already installed:
 
 `git clone https://github.com/reiniiriarios/squirrel-table.git`
 
