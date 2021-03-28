@@ -13,7 +13,8 @@ module.exports = {
       /^\/dist/,
       /^\/scss/,
       /\.gitignore/,
-      /\.github.*\.json/,
+      /\.github\.json/,
+      /\.github\.sample\.json/,
       /preferences\.json/,
       /imported_key/
     ]
