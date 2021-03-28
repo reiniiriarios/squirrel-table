@@ -192,8 +192,8 @@ ipcMain.on('import-settings',(event) => {
       defaultPath : app.getPath('documents'),
       buttonLabel : "Choose File",
       filters :[
-          {name: 'JSON', extensions: ['json']},
-          {name: 'All Files', extensions: ['*']}
+        {name: 'JSON', extensions: ['json']},
+        {name: 'All Files', extensions: ['*']}
       ]
     }).then((result) => {
       if (result.canceled) {
@@ -225,7 +225,8 @@ async function readImportedPrefs(filePath) {
     try {
       let importedPrefsString = fs.readFileSync(filePath);
       let importedPrefs = JSON.parse(importedPrefsString);
-      let newPrefs = {...preferences, ...importedPrefs};
+      // only import specific sections
+      let newPrefs = {...preferences, ...{sql:importedPrefs.sql}, ...{ssh:importedPrefs.ssh}, ...{sshEnabled:importedPrefs.sshEnabled}};
       if (!newPrefs.ssh.encryptedKey) {
         resolve(newPrefs);
       }
@@ -260,7 +261,13 @@ ipcMain.on('export-settings',(event) => {
       event.reply('settings-exported');
     }
     else {
-      encryptPrefs(preferences).then(exportPrefs => {
+      // only export these sections (and ssh key, encrypted separately)
+      let preferencesLimited = {
+        sql: preferences.sql,
+        ssh: preferences.ssh,
+        sshEnabled: preferences.sshEnabled
+      };
+      encryptPrefs(preferencesLimited).then(exportPrefs => {
         if (preferences.ssh.key) {
           fs.readFile(preferences.ssh.key, 'utf8', (err, key) => {
             if (err) throw err;
@@ -286,6 +293,6 @@ ipcMain.on('export-settings',(event) => {
     }
   }).catch(err => {
     log.error(err);
-    event.reply('settings-exported'); // still replying because process is done
+    event.reply('settings-exported'); // still need to reply because process is done
   });
 });

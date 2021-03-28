@@ -112,7 +112,9 @@ module.exports = {
     postPackage: async (forgeConfig, options) => {
       await fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
       await fs.copyFileSync('README.md', options.outputPaths[0] + '/README.md');
+
       // windows tile here..?
+      
       if (options.spinner) {
         options.spinner.info(`Packaged for ${options.platform} / ${options.arch} at ${options.outputPaths[0]}`);
       }
