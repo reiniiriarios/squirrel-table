@@ -12,6 +12,7 @@ module.exports = {
       /^\/design/,
       /^\/dist/,
       /^\/scss/,
+      /^\/screenshots/,
       /\.gitignore/,
       /\.github\.json/,
       /\.github\.sample\.json/,
