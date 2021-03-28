@@ -110,11 +110,14 @@ module.exports = {
       });
     },
     postPackage: async (forgeConfig, options) => {
-      await fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
-      await fs.copyFileSync('README.md', options.outputPaths[0] + '/README.md');
+      fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
+      fs.copyFileSync('README.md', options.outputPaths[0] + '/README.md');
 
       // windows tile here..?
-      
+      // can create in correct dir, but after install will be in wrong dir
+      // how to move from app.getPath('appData')/app-x.x.x/ to app.getPath('appData')...?
+      // does it need to move..?
+
       if (options.spinner) {
         options.spinner.info(`Packaged for ${options.platform} / ${options.arch} at ${options.outputPaths[0]}`);
       }
