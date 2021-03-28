@@ -1,4 +1,4 @@
-const { app, ipcMain, dialog } = require('electron');
+const { app, ipcMain, dialog, BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const log = require('electron-log');
@@ -7,6 +7,24 @@ const crypt = require(path.join(__dirname,'main-crypt.js'));
 let preferencesFile = path.join(app.getPath('userData'), 'preferences.json');
 let importedKeyFile = path.join(app.getPath('userData'), 'imported_key');
 let preferences = {
+  sqlDir: false,
+  sshEnabled: false,
+  ssh: {
+    host: '',
+    port: 22,
+    user: '',
+    pass: '',
+    key:  '',
+    remotePort: 3306
+  },
+  sql: {
+    host: '',
+    user: '',
+    pass: '',
+    db:   ''
+  }
+};
+let preferencesEncrypted = {
   sqlDir: false,
   sshEnabled: false,
   ssh: {
@@ -50,21 +68,29 @@ exports.getSshPrivateKey = () => {
   }
 }
 
-async function encryptPrefs(decryptedPrefs) {
-  let encryptedPrefs = decryptedPrefs;
-  encryptedPrefs.ssh.user = await crypt.encrypt(decryptedPrefs.ssh.user);
-  encryptedPrefs.ssh.pass = await crypt.encrypt(decryptedPrefs.ssh.pass);
-  encryptedPrefs.sql.user = await crypt.encrypt(decryptedPrefs.sql.user);
-  encryptedPrefs.sql.pass = await crypt.encrypt(decryptedPrefs.sql.pass);
-  return encryptedPrefs;
+async function encryptPrefs() {
+  try {
+    preferencesEncrypted.ssh.user = await crypt.encrypt(preferences.ssh.user).catch(err => { throw err });
+    preferencesEncrypted.ssh.pass = await crypt.encrypt(preferences.ssh.pass).catch(err => { throw err });
+    preferencesEncrypted.sql.user = await crypt.encrypt(preferences.sql.user).catch(err => { throw err });
+    preferencesEncrypted.sql.pass = await crypt.encrypt(preferences.sql.pass).catch(err => { throw err });
+  }
+  catch (err) {
+    return err;
+  }
+  return false;
 }
-async function decryptPrefs(encryptedPrefs) {
-  let decryptedPrefs = encryptedPrefs;
-  decryptedPrefs.ssh.user = await crypt.decrypt(encryptedPrefs.ssh.user);
-  decryptedPrefs.ssh.pass = await crypt.decrypt(encryptedPrefs.ssh.pass);
-  decryptedPrefs.sql.user = await crypt.decrypt(encryptedPrefs.sql.user);
-  decryptedPrefs.sql.pass = await crypt.decrypt(encryptedPrefs.sql.pass);
-  return decryptedPrefs;
+async function decryptPrefs() {
+  try {
+    preferences.ssh.user = await crypt.decrypt(preferencesEncrypted.ssh.user).catch(err => { throw err });
+    preferences.ssh.pass = await crypt.decrypt(preferencesEncrypted.ssh.pass).catch(err => { throw err });
+    preferences.sql.user = await crypt.decrypt(preferencesEncrypted.sql.user).catch(err => { throw err });
+    preferences.sql.pass = await crypt.decrypt(preferencesEncrypted.sql.pass).catch(err => { throw err });
+  }
+  catch (err) {
+    return err;
+  }
+  return false;
 }
 
 exports.loadPreferences = async () => {
@@ -75,47 +101,49 @@ exports.loadPreferences = async () => {
       }
       else {
         let preferencesString = fs.readFileSync(preferencesFile);
-        let newPrefs = JSON.parse(preferencesString);
-        if (typeof preferences.ssh == 'undefined') {
+        preferencesEncrypted = JSON.parse(preferencesString);
+        if (typeof preferencesEncrypted.ssh == 'undefined') {
           throw 'Unable to read preferences';
         }
         else {
-          decryptPrefs(newPrefs).then(decryptedPrefs => {
-            preferences = decryptedPrefs;
-            resolve(preferences);
-          }).catch(err => { throw err; });
+          preferences = JSON.parse(preferencesString);
+          decryptPrefs().then((err) => {
+            if (err) reject(err);
+            else resolve();
+          });
         }
       }
     }
     catch(error) {
-      log.error('Error reading preferences, resetting to defaults.');
+      log.error(error);
+      log.info('Resetting preferences to default');
       writePreferences(preferences).then(() => {
         log.info('Preferences reset');
         resolve(preferences);
       }).catch(err => {
-        log.error(err);
+        reject(err);
       });
     }
   });
 }
 
-async function writePreferences(newPrefs) {
+async function writePreferences() {
   return new Promise((resolve, reject) => {
-    preferencesString = JSON.stringify(newPrefs, null, "\t");
+    preferencesString = JSON.stringify(preferencesEncrypted, null, "\t");
     fs.writeFile(preferencesFile, preferencesString, (error) => {
       if (error) {
         reject(error);
       }
       else {
-        resolve(newPrefs);
+        resolve(true);
       }
     });
   });
 }
 
-async function updatePreferences(section, newPrefs) {
+async function updatePreferences(section, updatePrefs) {
   return new Promise((resolve, reject) => {
-    preferences[section] = newPrefs;
+    preferences[section] = updatePrefs;
     resolve();
   });
 }
@@ -128,22 +156,29 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
     event.reply('ssh-key-not-found');
   }
   else {
-    updatePreferences(section, newPrefs).then(() => {
-      return encryptPrefs(preferences);
-    }).then(encryptedPrefs => {
-      return writePreferences(encryptedPrefs);
-    }).then(() => {
-      if (section == 'ssh' && newPrefs.key != importedKeyFile && fs.existsSync(importedKeyFile)) {
-        fs.unlink(importedKeyFile, (err) => {
-          if (err) {
-            log.error(err);
-          }
-        });
-      }
-      event.reply('preferences-updated', section, newPrefs);
-    }).catch(err => {
+    try {
+      updatePreferences(section, newPrefs).then(() => {
+        return encryptPrefs();
+      }).then(err => {
+        if (err) throw err;
+        else return writePreferences();
+      }).then(() => {
+        if (section == 'ssh' && preferences.ssh.key != importedKeyFile && fs.existsSync(importedKeyFile)) {
+          fs.unlink(importedKeyFile, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+        event.reply('preferences-updated', section, preferences[section]);
+      }).catch(err => {
+        throw err;
+      });
+    }
+    catch (err) {
       log.error(err);
-    });
+      throw err; // handle better
+    }
   }
 });
 
@@ -200,17 +235,16 @@ ipcMain.on('import-settings',(event) => {
         event.reply('settings-imported');
       }
       else {
-        readImportedPrefs(result.filePaths[0]).then(newPrefs => {
-          return writePreferences(newPrefs);
-        }).then(newPrefs => {
-          return decryptPrefs(newPrefs);
-        }).then(newPrefsDecrypted => {
-          preferences = newPrefsDecrypted;
+        readImportedPrefs(result.filePaths[0]).then(() => {
+          return writePreferences();
+        }).then(() => {
+          return decryptPrefs();
+        }).then(() => {
           event.reply('settings-imported');
-          event.reply('reply-preferences','sqlDir',newPrefsDecrypted.sqlDir);
-          event.reply('reply-preferences','sql',newPrefsDecrypted.sql);
-          event.reply('reply-preferences','sshEnabled',newPrefsDecrypted.sshEnabled);
-          event.reply('reply-preferences','ssh',newPrefsDecrypted.ssh);
+          event.reply('reply-preferences','sqlDir',preferences.sqlDir);
+          event.reply('reply-preferences','sql',preferences.sql);
+          event.reply('reply-preferences','sshEnabled',preferences.sshEnabled);
+          event.reply('reply-preferences','ssh',preferences.ssh);
         }).catch(err => { throw err; });
       }
     });
@@ -226,17 +260,17 @@ async function readImportedPrefs(filePath) {
       let importedPrefsString = fs.readFileSync(filePath);
       let importedPrefs = JSON.parse(importedPrefsString);
       // only import specific sections
-      let newPrefs = {...preferences, ...{sql:importedPrefs.sql}, ...{ssh:importedPrefs.ssh}, ...{sshEnabled:importedPrefs.sshEnabled}};
-      if (!newPrefs.ssh.encryptedKey) {
-        resolve(newPrefs);
+      preferencesEncrypted = {...preferencesEncrypted, ...{sql:importedPrefs.sql}, ...{ssh:importedPrefs.ssh}, ...{sshEnabled:importedPrefs.sshEnabled}};
+      if (!preferencesEncrypted.ssh.encryptedKey) {
+        resolve();
       }
       else {
-        crypt.decrypt(newPrefs.ssh.encryptedKey).then(decryptedKey => {
-          newPrefs.ssh.key = importedKeyFile;
-          newPrefs.ssh.encryptedKey = '';
+        crypt.decrypt(preferencesEncrypted.ssh.encryptedKey).then(decryptedKey => {
+          preferencesEncrypted.ssh.key = importedKeyFile;
+          preferencesEncrypted.ssh.encryptedKey = '';
           fs.writeFile(importedKeyFile, decryptedKey, (err) => {
             if (err) throw err;
-            resolve(newPrefs);
+            resolve();
           });
         }).catch(err => { throw err; });
       }
@@ -262,19 +296,19 @@ ipcMain.on('export-settings',(event) => {
     }
     else {
       // only export these sections (and ssh key, encrypted separately)
-      let preferencesLimited = {
-        sql: preferences.sql,
-        ssh: preferences.ssh,
-        sshEnabled: preferences.sshEnabled
-      };
-      encryptPrefs(preferencesLimited).then(exportPrefs => {
-        if (preferences.ssh.key) {
-          fs.readFile(preferences.ssh.key, 'utf8', (err, key) => {
+      encryptPrefs().then(() => {
+        let preferencesLimited = {
+          sql: preferencesEncrypted.sql,
+          ssh: preferencesEncrypted.ssh,
+          sshEnabled: preferencesEncrypted.sshEnabled
+        };
+        if (preferencesLimited.ssh.key) {
+          fs.readFile(preferencesLimited.ssh.key, 'utf8', (err, key) => {
             if (err) throw err;
             crypt.encrypt(key).then((encryptedKey) => {
-              exportPrefs.ssh.encryptedKey = encryptedKey;
-              exportPrefs.ssh.key = '';
-              let exportPrefsString = JSON.stringify(exportPrefs,null,"\t");
+              preferencesLimited.ssh.encryptedKey = encryptedKey;
+              preferencesLimited.ssh.key = '';
+              let exportPrefsString = JSON.stringify(preferencesLimited,null,"\t");
               fs.writeFile(result.filePath, exportPrefsString, (err) => {
                 if (err) throw err;
                 event.reply('settings-exported');
@@ -283,7 +317,7 @@ ipcMain.on('export-settings',(event) => {
           });
         }
         else {
-          let exportPrefsString = JSON.stringify(exportPrefs,null,"\t");
+          let exportPrefsString = JSON.stringify(preferencesLimited,null,"\t");
           fs.writeFile(result.filePath, exportPrefsString, (err) => {
             if (err) throw err;
             event.reply('settings-exported');
@@ -292,7 +326,7 @@ ipcMain.on('export-settings',(event) => {
       });
     }
   }).catch(err => {
-    log.error(err);
+    log.error(err); // handle better
     event.reply('settings-exported'); // still need to reply because process is done
   });
 });
