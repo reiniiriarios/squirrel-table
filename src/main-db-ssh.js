@@ -10,7 +10,7 @@ preferences = prefs.getPreferences();
 let dbssh = () => {
   try {
     let conn = new Promise((resolve, reject) => {
-      ssh.on('ready', function() {
+      ssh.on('ready', () => {
         ssh.forwardOut(
           '127.0.0.1',
           3306,
@@ -28,11 +28,12 @@ let dbssh = () => {
               database : preferences.sql.db,
               stream: stream
             });
-            connection.connect((err) => {
-              if (!err) {
-                resolve(connection);
-              } else {
+            connection.connect(err => {
+              if (err) {
                 reject(err);
+              }
+              else {
+                resolve(connection);
               }
             });
           }

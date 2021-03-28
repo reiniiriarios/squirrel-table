@@ -50,12 +50,12 @@ exports.getSshPrivateKey = () => {
   }
 }
 
-async function encryptPrefs() {
-  let encryptedPrefs = preferences;
-  encryptedPrefs.ssh.user = await crypt.encrypt(preferences.ssh.user);
-  encryptedPrefs.ssh.pass = await crypt.encrypt(preferences.ssh.pass);
-  encryptedPrefs.sql.user = await crypt.encrypt(preferences.sql.user);
-  encryptedPrefs.sql.pass = await crypt.encrypt(preferences.sql.pass);
+async function encryptPrefs(decryptedPrefs) {
+  let encryptedPrefs = decryptedPrefs;
+  encryptedPrefs.ssh.user = await crypt.encrypt(decryptedPrefs.ssh.user);
+  encryptedPrefs.ssh.pass = await crypt.encrypt(decryptedPrefs.ssh.pass);
+  encryptedPrefs.sql.user = await crypt.encrypt(decryptedPrefs.sql.user);
+  encryptedPrefs.sql.pass = await crypt.encrypt(decryptedPrefs.sql.pass);
   return encryptedPrefs;
 }
 async function decryptPrefs(encryptedPrefs) {
@@ -129,7 +129,7 @@ ipcMain.on('update-preferences',(event, section, newPrefs) => {
   }
   else {
     updatePreferences(section, newPrefs).then(() => {
-      return encryptPrefs();
+      return encryptPrefs(preferences);
     }).then(encryptedPrefs => {
       return writePreferences(encryptedPrefs);
     }).then(() => {

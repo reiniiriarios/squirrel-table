@@ -130,9 +130,7 @@ ipcRenderer.on('reply-preferences',(event, section, newPrefs) => {
   switch (section) {
     case 'sqlDir':
       dirSql.val(newPrefs);
-      if (testDirPrefs()) {
-        listQueries();
-      }
+      testDirPrefs();
       break;
     case 'sql':
       sqlUser.val(newPrefs.user);
@@ -258,7 +256,6 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
   preferences[section] = newPrefs;
   switch (section) {
     case 'sqlDir':
-      console.log('Dir Settings Saved');
       saveDirSettingsButton.text('Saved');
       tryRefreshList();
       setTimeout(() => {
@@ -266,7 +263,6 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
       }, 500);
       break;
     case 'sql':
-      console.log('SQL Settings Saved');
       saveSqlSettingsButton.text('Saved');
       testSqlPrefs();
       setTimeout(() => {
@@ -274,11 +270,9 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
       }, 500);
       break;
     case 'sshEnabled':
-      console.log('SSH Enabled Toggled');
       testSshPrefs();
       break;
     case 'ssh':
-      console.log('SSH Settings Saved');
       saveSshSettingsButton.text('Saved');
       testSshPrefs();
       setTimeout(() => {

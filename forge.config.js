@@ -3,9 +3,8 @@ const path = require('path');
 const githubjson = require('./.github.json');
 const sass = require('node-sass');
 const yaml = require('js-yaml');
-//const crypto = require('crypto');
-const { resolve } = require('path');
-const { rejects } = require('assert');
+// const { resolve } = require('path');
+// const { rejects } = require('assert');
 
 module.exports = {
   packagerConfig: {

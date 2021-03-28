@@ -38,7 +38,6 @@ ipcRenderer.on('sql-list',(event,sqlfiles) => {
       closeStartDir();
       noQueriesMsg.css('display','none');
     });
-    console.log(sqlfiles);
   }
   else {
     openStartDir();
@@ -66,12 +65,12 @@ function showQuery() {
 ipcRenderer.on('sql-read', (event, sql) => {
   let lines = sql.toString().split(/\r\n|\r|\n/);
   lines.forEach((line) => {
-      if (line.substr(0,2) == '--') {
-        selectedQuery.desc += line.substr(2);
-      }
-      else {
-        selectedQuery.sql += line + "\n";
-      }
+    if (line.substr(0,2) == '--') {
+      selectedQuery.desc += line.substr(2);
+    }
+    else {
+      selectedQuery.sql += line + "\n";
+    }
   });
   selectedQuery.sql = selectedQuery.sql.trim();
 
@@ -90,7 +89,7 @@ ipcRenderer.on('sql-read', (event, sql) => {
 
   if (selectedQuery.desc) {
     selectedQuery.desc = selectedQuery.desc.replace(/(?:\r\n|\r|\n)/g, ' ').trim();
-    comments.innerText = selectedQuery.desc;
+    comments.text(selectedQuery.desc);
   }
   else {
     comments.html('<em>none</em>');
