@@ -117,7 +117,7 @@ module.exports = {
       let data = {
         provider: 'github',
         owner: 'reiniiriarios',
-        repo: 'squirrel-table',
+        repo: 'squirrel-table'
       };
       /*
       let data = {
