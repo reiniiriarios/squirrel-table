@@ -135,9 +135,6 @@ function runQuery(sql, callback) {
           });
         });
         callback(parsedFields, results);
-      }).catch(err => {
-        log.error(err);
-        BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', err.message);
       });
     }).catch(err => {
       log.error(err);
