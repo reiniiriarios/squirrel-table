@@ -108,7 +108,7 @@ imported_key
 .github.json
 
 # css, compiled at runtime
-src/style.css
+src/*.css
 
 # dist
 dist/
