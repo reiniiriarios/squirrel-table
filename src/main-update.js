@@ -9,7 +9,6 @@ const updateError = (error) => {
 
 ipcMain.on('check-for-updates',(event) => {
   fetch('https://api.github.com/repos/reiniiriarios/squirrel-table/releases?per_page=1').then(res => res.json()).then(releases => {
-    console.log(releases);
     let latestVersion = semver.clean(releases[0].tag_name);
     if (semver.lte(latestVersion, app.getVersion())) {
       //todo: filter by process.platform
