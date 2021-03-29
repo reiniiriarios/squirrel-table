@@ -26,14 +26,13 @@ app.on('ready', function() {
     require(path.join(__dirname,'main-save-csv.js'));
     require(path.join(__dirname,'main-update.js'));
     
-    createMainWindow(() => {
-    });
+    createMainWindow();
   }).catch(err => {
     log.error(err);
   });
 });
 
-function createMainWindow(callback) {
+function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 640,
@@ -65,8 +64,6 @@ function createMainWindow(callback) {
 
   // Load index
   mainWindow.loadFile(path.join(__dirname,'index.html'));
-
-  callback();
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
