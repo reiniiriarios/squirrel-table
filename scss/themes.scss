@@ -1,0 +1,153 @@
+.theme-choice {
+  margin: 10px 0;
+  padding: 6px 10px 8px 6px;
+  height: 42px;
+  position: relative;
+  cursor: pointer;
+  & > em {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 50%;
+  }
+  &:hover > em:after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.2);
+  }
+  &.selected > em:after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.3);
+  }
+  & > div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 185px;
+    h3 {
+      margin: 0 0 4px 0;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+}
+.theme {
+  height: 20px;
+  span {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+  }
+}
+
+@import "_variables.scss";
+
+.theme.default {
+  span:nth-child(1) {
+    background-color: $uiColor1;
+  }
+  span:nth-child(2) {
+    background-color: $uiColor2;
+  }
+  span:nth-child(3) {
+    background-color: $uiColor3;
+  }
+  span:nth-child(4) {
+    background-color: $uiColor4;
+  }
+  span:nth-child(5) {
+    background-color: $uiColor5;
+  }
+  span:nth-child(6) {
+    background-color: $uiColor6;
+  }
+  span:nth-child(7) {
+    background-color: $uiColor7;
+  }
+  span:nth-child(8) {
+    background-color: $uiColor8;
+  }
+  span:nth-child(9) {
+    background-color: $accentColor;
+  }
+}
+
+@import "_variables-merbitch.scss";
+
+.theme.merbitch {
+  span:nth-child(1) {
+    background-color: $uiColor1;
+  }
+  span:nth-child(2) {
+    background-color: $uiColor2;
+  }
+  span:nth-child(3) {
+    background-color: $uiColor3;
+  }
+  span:nth-child(4) {
+    background-color: $uiColor4;
+  }
+  span:nth-child(5) {
+    background-color: $uiColor5;
+  }
+  span:nth-child(6) {
+    background-color: $uiColor6;
+  }
+  span:nth-child(7) {
+    background-color: $uiColor7;
+  }
+  span:nth-child(8) {
+    background-color: $uiColor8;
+  }
+  span:nth-child(9) {
+    background-color: $accentColor;
+  }
+}
+
+@import "_variables-github.scss";
+
+.theme.github {
+  span:nth-child(1) {
+    background-color: $uiColor1;
+  }
+  span:nth-child(2) {
+    background-color: $uiColor2;
+  }
+  span:nth-child(3) {
+    background-color: $uiColor3;
+  }
+  span:nth-child(4) {
+    background-color: $uiColor4;
+  }
+  span:nth-child(5) {
+    background-color: $uiColor5;
+  }
+  span:nth-child(6) {
+    background-color: $uiColor6;
+  }
+  span:nth-child(7) {
+    background-color: $uiColor7;
+  }
+  span:nth-child(8) {
+    background-color: $uiColor8;
+  }
+  span:nth-child(9) {
+    background-color: $accentColor;
+  }
+}

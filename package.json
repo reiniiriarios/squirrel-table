@@ -1,7 +1,7 @@
 {
   "name": "squirrel-table",
   "productName": "SquirrelTable",
-  "version": "0.4.3",
+  "version": "0.5.0-prerelease",
   "description": "Run SQL files over SSH and save CSVs from the results",
   "main": "src/main.js",
   "scripts": {
@@ -12,8 +12,8 @@
     "publish-local": "electron-forge publish --target electron-forge-publisher-local",
     "lint": "echo \"No linting configured\"",
     "localhost": "http-server dist/ -p 8080",
-    "sass": "node-sass scss/main.scss src/style.css",
-    "sass-watch": "node-sass -w scss/main.scss src/style.css"
+    "scss": "node-sass -o src scss/",
+    "scss-watch": "node-sass -w -o src scss/"
   },
   "keywords": [],
   "author": {

@@ -22,7 +22,8 @@ let preferences = {
     user: '',
     pass: '',
     db:   ''
-  }
+  },
+  theme: 'default'
 };
 let preferencesEncrypted = {
   sqlDir: false,
@@ -40,7 +41,8 @@ let preferencesEncrypted = {
     user: '',
     pass: '',
     db:   ''
-  }
+  },
+  theme: 'default'
 };
 
 exports.getPreferences = (section=false) => {
@@ -101,12 +103,12 @@ exports.loadPreferences = async () => {
       }
       else {
         let preferencesString = fs.readFileSync(preferencesFile);
-        preferencesEncrypted = JSON.parse(preferencesString);
+        preferencesEncrypted = {...preferencesEncrypted, ...JSON.parse(preferencesString)};
         if (typeof preferencesEncrypted.ssh == 'undefined') {
           throw 'Unable to read preferences';
         }
         else {
-          preferences = JSON.parse(preferencesString);
+          preferences = {...preferences, ...JSON.parse(preferencesString)};
           decryptPrefs().then(err => {
             if (err) reject(err);
             else resolve();

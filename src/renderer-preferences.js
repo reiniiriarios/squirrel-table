@@ -60,6 +60,15 @@ const settingsPanels = {
       togglePanel(settingsPanels.general);
     }
   },
+  theme: {
+    name:   'theme',
+    button: $('#theme-settings-button'),
+    panel:  $('#theme-settings-panel'),
+    open:   false,
+    toggle: () => {
+      togglePanel(settingsPanels.theme);
+    }
+  },
   info: {
     name:   'info',
     button: $('#info-button'),
@@ -74,6 +83,7 @@ settingsPanels.dir.button.on('click',settingsPanels.dir.toggle);
 settingsPanels.ssh.button.on('click',settingsPanels.ssh.toggle);
 settingsPanels.sql.button.on('click',settingsPanels.sql.toggle);
 settingsPanels.general.button.on('click',settingsPanels.general.toggle);
+settingsPanels.theme.button.on('click',settingsPanels.theme.toggle);
 settingsPanels.info.button.on('click',settingsPanels.info.toggle);
 
 let preferences = {};
@@ -151,6 +161,9 @@ ipcRenderer.on('reply-preferences',(event, section, newPrefs) => {
       sshPortRemote.val(newPrefs.remotePort);
       testSshPrefs();
       break;
+    case 'theme':
+      setTheme(newPrefs);
+      break;
     default:
       showError('Undefined preferences set: ' + section);
   }
@@ -160,6 +173,7 @@ ipcRenderer.send('get-preferences','sqlDir');
 ipcRenderer.send('get-preferences','sql');
 ipcRenderer.send('get-preferences','sshEnabled');
 ipcRenderer.send('get-preferences','ssh');
+ipcRenderer.send('get-preferences','theme');
 
 let dirStart = false;
 let sqlStart = false;
@@ -278,6 +292,9 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
       setTimeout(() => {
         saveSshSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
       }, 500);
+      break;
+    case 'theme':
+      //...
       break;
     default:
       showError('Undefined preferences set updated: ' + section);

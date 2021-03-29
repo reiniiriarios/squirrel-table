@@ -34,20 +34,20 @@ pre, code {
   }
 }
 .sql-hl-keyword {
-  color: $green;
+  color: $colorKeyword;
 }
 .sql-hl-function {
-  color: $yellow;
+  color: $colorFunction;
 }
 .sql-hl-number {
-  color: $red;
+  color: $colorNumber;
 }
 .sql-hl-string {
-  color: $purple;
+  color: $colorString;
 }
 .sql-hl-special {
-  color: $blue;
+  color: $colorSpecial;
 }
 .sql-hl-bracket {
-  color: $blue;
+  color: $colorBracket;
 }

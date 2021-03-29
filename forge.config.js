@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const githubjson = require('./.github.json');
-const sass = require('node-sass');
 const yaml = require('js-yaml');
 
 module.exports = {
@@ -85,21 +84,7 @@ module.exports = {
   ],
   hooks: {
     generateAssets: async (forgeConfig) => {
-      await sass.render({
-        file: 'scss/main.scss',
-        outFile: 'src/style.css'
-      }, (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        else {
-          fs.writeFile('src/style.css', result.css, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
-        }
-      });
+      //...
     },
     postPackage: async (forgeConfig, options) => {
       await fs.copyFileSync('LICENSE', options.outputPaths[0] + '/LICENSE');
@@ -153,7 +138,7 @@ module.exports = {
       */
     },
     postMake: async (forgeConfig, makeResultObjects) => {
-      
+      //...
     }
   }
 }
