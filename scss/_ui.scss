@@ -30,7 +30,8 @@ input[type="text"],
 input[type="password"],
 textarea,
 code,
-code span {
+code span,
+#result {
   -webkit-user-select: text;
   user-select: text;
 }
