@@ -2,6 +2,7 @@ const { BrowserWindow, app, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const csvStringify = require('csv-stringify');
+const log = require('electron-log');
   
 function array2csv(data, callback) {
   csvStringify(data, (err, csvString) => {
@@ -24,15 +25,19 @@ function saveCsvString(csvString, defaultName, callback) {
       {name: 'All Files', extensions: ['*']}
     ]
   }).then(result => {
-    if (result.canceled) callback(false);
-    BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Writing File');
-    fs.writeFile(result.filePath, csvString, (err) => {
-      if (err) {
-        log.error(err);
-        BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', 'Error Writing File');
-      }
-      callback(result.filePath);
-    });
+    if (result.canceled) {
+      callback(false);
+    }
+    else {
+      BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Writing File');
+      fs.writeFile(result.filePath, csvString, (err) => {
+        if (err) {
+          log.error(err);
+          BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', 'Error Writing File');
+        }
+        callback(result.filePath);
+      });
+    }
   }).catch(err => {
     log.error(err);
     BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', 'Error Saving File');
