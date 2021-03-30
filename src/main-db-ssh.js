@@ -54,6 +54,9 @@ let dbssh = () => {
               case 'ETIMEDOUT':
                 msg = 'Connection timed out';
                 break;
+              case 'ECONNREFUSED':
+                msg = 'Connection refused';
+                break;
               default:
                 msg = error.message;
             }
