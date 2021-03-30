@@ -1,7 +1,7 @@
 {
   "name": "squirrel-table",
   "productName": "SquirrelTable",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Run SQL files over SSH and save CSVs from the results",
   "main": "src/main.js",
   "scripts": {
