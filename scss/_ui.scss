@@ -31,7 +31,7 @@ input[type="password"],
 textarea,
 code,
 code span,
-#result {
+#result, #result table, #result tr, #result th, #result td {
   -webkit-user-select: text;
   user-select: text;
 }
