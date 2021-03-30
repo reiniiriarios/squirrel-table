@@ -16,6 +16,7 @@
 
 const { app, BrowserWindow, ipcMain, dialog, Menu, globalShortcut } = require('electron');
 const path = require('path');
+const windowStateKeeper = require('electron-window-state');
 const log = require('electron-log');
 // log. error, warn, info, verbose, debug, silly
 
@@ -49,9 +50,15 @@ app.on('ready', function() {
 });
 
 function createMainWindow() {
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 1100,
+    defaultHeight: 640
+  });
   mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 640,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     minWidth: 1050,
     minHeight: 600,
     webPreferences: {
@@ -63,7 +70,8 @@ function createMainWindow() {
   });
   global.mainWindowId = mainWindow.id;
 
-  // Load index
+  mainWindowState.manage(mainWindow);
+
   mainWindow.loadFile(path.join(__dirname,'index.html'));
 }
 
