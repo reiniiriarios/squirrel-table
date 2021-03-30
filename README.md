@@ -5,18 +5,16 @@ SquirrelTable is a desktop application that can run MySQL queries over SSH and g
 ![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20225340.png)
 ## Latest Release
 
-* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.4.2/SquirrelTableSetup.exe)
-* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.4.2/SquirrelTable-win32-x64-0.4.2.zip)
+* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.0/SquirrelTableSetup.exe)
+* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.0/SquirrelTable-win32-x64-0.5.0.zip)
 
 ## Getting Started
 
-After installing, you'll need to set things up.
-
-![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20222017.png)
-
-Enter your database connection information and, if connecting over SSH, that connection information as well.
+After installing, select a directory of SQL files and configure your database connection and SSH setting if connecting through a tunnel.
 
 ![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20221903.png)
+
+Currently files cannot be edited in SquirrelTable. This functionality is on my todo list, but not a priority.
 
 Any commented lines will appear at the bottom of the screen rather than in-line.
 
@@ -38,7 +36,6 @@ If you want to copy your settings to another device or just want to set up other
 
 * Auto-refresh when files in directory change
 * SQL editor
-* UI Themes!
 
 ## Running & Making from Source
 
