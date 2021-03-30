@@ -3,7 +3,8 @@ let themeSheet = $('#theme');
 const themes = [
   'default',
   'merbitch',
-  'github'
+  'github',
+  'tideup'
 ];
 
 const setTheme = (theme) => {
