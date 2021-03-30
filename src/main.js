@@ -63,21 +63,6 @@ function createMainWindow() {
   });
   global.mainWindowId = mainWindow.id;
 
-  // Cmd/Ctrl+R Refresh page, mostly useful for dev
-	globalShortcut.register('CommandOrControl+R', function() {
-		mainWindow.reload();
-	});
-  
-  // Cmd/Ctrl+D Show dev tools
-	globalShortcut.register('CommandOrControl+Shift+I', function() {
-    mainWindow.webContents.openDevTools();
-	});
-  
-  // Cmd/Ctrl+Q Quit app
-	globalShortcut.register('CommandOrControl+Q', function() {
-    app.quit();
-	});
-
   // Load index
   mainWindow.loadFile(path.join(__dirname,'index.html'));
 }
@@ -100,6 +85,12 @@ ipcMain.handle('minimize-app', (event) => {
 });
 ipcMain.handle('maximize-app', (event) => {
   mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+});
+ipcMain.handle('refresh-window', (event) => {
+  mainWindow.reload();
+});
+ipcMain.handle('toggle-devtools', (event) => {
+  mainWindow.webContents.toggleDevTools();
 });
 
 app.on('activate', () => {

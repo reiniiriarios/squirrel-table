@@ -24,6 +24,18 @@ $(document).on('click', 'a[href^="http"]', function(event) {
     shell.openExternal(this.href);
 });
 
+window.addEventListener('keydown',event => {
+  if ((event.ctrlKey || event.metaKey) && event.key === 'q') {
+    ipcRenderer.invoke('close-app');
+  }
+  else if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
+    ipcRenderer.invoke('refresh-window');
+  }
+  else if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'I') {
+    ipcRenderer.invoke('toggle-devtools');
+  }
+});
+
 const titleBar         = $('#titlebar');
 const closeButton      = $('#close');
 const maxButton        = $('#maximize');
