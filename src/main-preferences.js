@@ -7,7 +7,7 @@ const crypt = require(path.join(__dirname,'main-crypt.js'));
 let preferencesFile = path.join(app.getPath('userData'), 'preferences.json');
 let importedKeyFile = path.join(app.getPath('userData'), 'imported_key');
 let preferences = {
-  sqlDir: false,
+  sqlDir: '',
   sshEnabled: false,
   ssh: {
     host: '',
@@ -26,7 +26,7 @@ let preferences = {
   theme: 'default'
 };
 let preferencesEncrypted = {
-  sqlDir: false,
+  sqlDir: '',
   sshEnabled: false,
   ssh: {
     host: '',
