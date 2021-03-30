@@ -5,8 +5,8 @@ SquirrelTable is a desktop application that can run MySQL queries over SSH and g
 ![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20225340.png)
 ## Latest Release
 
-* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.0/SquirrelTableSetup.exe)
-* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.0/SquirrelTable-win32-x64-0.5.0.zip)
+* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.1/SquirrelTableSetup.exe)
+* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.1/SquirrelTable-win32-x64-0.5.1.zip)
 
 ## Getting Started
 
@@ -36,6 +36,8 @@ If you want to copy your settings to another device or just want to set up other
 
 * Auto-refresh when files in directory change
 * SQL editor
+* Order results table by column
+* Ctrl+F Find in results
 
 ## Running & Making from Source
 
