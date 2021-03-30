@@ -271,8 +271,8 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
   switch (section) {
     case 'sqlDir':
       saveDirSettingsButton.text('Saved');
-      tryRefreshList();
       setTimeout(() => {
+        tryRefreshList();
         saveDirSettingsButton.attr('disabled',false).removeClass('disabled').text('Save');
       }, 500);
       break;
