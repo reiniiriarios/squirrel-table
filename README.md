@@ -35,9 +35,8 @@ If you want to copy your settings to another device or just want to set up other
 ## To Do
 
 * Auto-refresh when files in directory change
-* SQL editor
-* Order results table by column
 * Ctrl+F Find in results
+* Export xls/xlsx
 
 ## Running & Making from Source
 
