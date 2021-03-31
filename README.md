@@ -2,11 +2,11 @@
 
 SquirrelTable is a desktop application that can run MySQL queries over SSH and generate CSV files. Useful for QA where queries need to be run repeatedly and CSV files handed off. Typical usage within a team might be to have a directory of SQL files syncing over cloud storage that one person can update and other people can simply open SquirrelTable and run as they need.
 
-![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20225340.png)
+![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-31%20174214.png)
 ## Latest Release
 
-* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.1/SquirrelTableSetup.exe)
-* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.1/SquirrelTable-win32-x64-0.5.1.zip)
+* [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.4/SquirrelTableSetup.exe)
+* [Windows x64 Portable](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.4/SquirrelTable-win32-x64-0.5.4.zip)
 
 ## Getting Started
 
@@ -37,6 +37,7 @@ If you want to copy your settings to another device or just want to set up other
 * Auto-refresh when files in directory change
 * Ctrl+F Find in results
 * Export xls/xlsx
+* Sorting by column is slow
 
 ## Running & Making from Source
 
@@ -49,6 +50,8 @@ After installing Node.js, if not already installed:
 `cd squirrel-table`
 
 `npm install`
+
+`npm run scss`
 
 See `forge.config.js` for settings. You'll need to edit as needed.
 
