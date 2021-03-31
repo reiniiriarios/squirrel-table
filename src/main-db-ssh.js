@@ -6,12 +6,9 @@ const ssh = new Client();
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 const log = require('electron-log');
 
-// todo:
-// ssh.dispose();
-
-let dbssh = () => {
-  try {
-    let conn = new Promise((resolve, reject) => {
+class dbssh {
+  connection = () => {
+    return new Promise((resolve, reject) => {
       try {
         let preferences = prefs.getPreferences();
         ssh.on('ready', () => {
@@ -25,7 +22,7 @@ let dbssh = () => {
               reject(err);
             }
             else {
-              connection = mysql.createConnection({
+              let connection = mysql.createConnection({
                 host     : preferences.sql.host,
                 user     : preferences.sql.user,
                 password : preferences.sql.pass, 
@@ -79,12 +76,11 @@ let dbssh = () => {
         BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
       }
     });
-    return conn;
   }
-  catch (error) {
-    log.error(error);
-    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
-  }
-};
+
+  end = () => {
+    ssh.end();
+  };
+}
 
 module.exports = dbssh;

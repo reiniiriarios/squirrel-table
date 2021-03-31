@@ -62,7 +62,7 @@ const flags = {
 
 preferences = prefs.getPreferences();
 
-let connection = preferences.sshEnabled ? dbssh : db;
+let dbctrl = preferences.sshEnabled ? new dbssh : new db;
 
 function runQuery(sql, callback) {
   if (preferences.sshEnabled) {
@@ -72,7 +72,7 @@ function runQuery(sql, callback) {
     BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Connecting to Database');
   }
   try {
-    connection().then(connection => {
+    dbctrl.connection().then(connection => {
       // query database 
       BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Executing Query');
       connection.query({sql: sql,rowsAsArray: true}, (error, results, fields) => {
@@ -134,6 +134,8 @@ function runQuery(sql, callback) {
             display:       field.displayType
           });
         });
+        connection.close();
+        dbctrl.end();
         callback(parsedFields, results);
       });
     }).catch(err => {
