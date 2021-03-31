@@ -17,8 +17,7 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu, globalShortcut } = require('electron');
 const path = require('path');
 const windowStateKeeper = require('electron-window-state');
-const log = require('electron-log');
-// log. error, warn, info, verbose, debug, silly
+const log = require('electron-log'); // log. error, warn, info, verbose, debug, silly
 
 // Remove menu toolbar
 Menu.setApplicationMenu(false);
@@ -28,7 +27,6 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
-// Main process files used in main processes
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 
 let mainWindow;

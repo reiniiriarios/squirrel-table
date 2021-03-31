@@ -52,6 +52,7 @@ const comments         = $('#comments');
 const result           = $('#result');
 const statusText       = $('#status');
 const runButton        = $('#run');
+const editButton       = $('#edit');
 const saveButton       = $('#save');
 const infoArea         = $('#info');
 const infoName         = $('#info-name');

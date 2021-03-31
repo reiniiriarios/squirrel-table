@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 const log = require('electron-log');
+const { exec } = require('child-process-promise');
 
 ipcMain.on('list-queries',(event) => {
   try {
@@ -49,4 +50,10 @@ ipcMain.on('read-sql', (event, name) => {
     BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', err);
     log.error(err);
   }
+});
+
+ipcMain.on('edit-query', (event, name) => {
+  exec('"'+path.join(prefs.getPreferences('sqlDir'), name + '.sql').replace('"','\"')+'"').then(() => {
+    event.reply('edit-query-sent');
+  });
 });

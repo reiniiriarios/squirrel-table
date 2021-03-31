@@ -29,12 +29,22 @@ function displayResult() {
   saveButton.attr('disabled', false).css('display', 'inline-block');
 }
 
+editButton.on('click',editQuery);
+function editQuery() {
+  ipcRenderer.send('edit-query', selectedQuery.name);
+  editButton.attr('disabled', true).addClass('disabled').css('display', 'inline-block');
+}
+ipcRenderer.on('edit-query-sent',event => {
+  editButton.attr('disabled', false).removeClass('disabled').css('display', 'inline-block');
+})
+
 runButton.on('click',runQuery);
 function runQuery() {
   if (this.disabled == true) return false;
   clearResult();
   saveButton.attr('disabled', true).css('display', 'none');
   runButton.addClass('running').attr('disabled', true);
+  editButton.attr('disabled', true).addClass('disabled').css('display', 'inline-block');
   updateStatus('Running Query');
   ipcRenderer.send('run-query', selectedQuery.sql);
 }
@@ -45,6 +55,7 @@ ipcRenderer.on('query-result', (event, fields, results) => {
   displayResult();
   clearStatus();
   runButton.removeClass('running').attr('disabled', false);
+  editButton.attr('disabled', true).addClass('disabled').css('display', 'none');
 });
 
 saveButton.on('click',saveCSV);

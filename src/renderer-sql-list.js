@@ -95,8 +95,8 @@ ipcRenderer.on('sql-read', (event, sql) => {
     comments.html('<em>none</em>');
   }
 
-  runButton.attr('disabled', false);
-  runButton.removeClass('disabled');
+  runButton.attr('disabled', false).removeClass('disabled');
+  editButton.attr('disabled', false).removeClass('disabled').css('display', 'inline-block');
 });
 
 try {
