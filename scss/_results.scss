@@ -12,13 +12,45 @@
       tr {
         border-bottom: 1px solid $uiColor2;
         th {
+          position: relative;
           text-align: left;
           font-weight: normal;
-          padding: 8px 10px;
+          padding: 8px 10px 8px 10px;
           background-color: $uiColor3;
           border-right: 1px solid $uiColor1;
+          &:first-child {
+            border-left: 1px solid $uiColor1;
+          }
           &:last-child {
             border: none;
+          }
+          &.sortable {
+            padding-right: 33px;
+            cursor: pointer;
+            &.sort-asc::after {
+              content: '';
+              position: absolute;
+              right: 9px;
+              top: 13px;
+              width: 0;
+              height: 0;
+              border-left: 7px solid transparent;
+              border-right: 7px solid transparent;
+              border-top: 7px solid $uiColor8;
+              clear: both;
+            }
+            &.sort-desc::after {
+              content: '';
+              position: absolute;
+              right: 9px;
+              top: 13px;
+              width: 0;
+              height: 0;
+              border-left: 7px solid transparent;
+              border-right: 7px solid transparent;
+              border-bottom: 7px solid $uiColor8;
+              clear: both;
+            }
           }
         }
       }
