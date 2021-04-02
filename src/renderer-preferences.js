@@ -205,7 +205,9 @@ function testSshPrefs() {
     return false;
   }
   else if (preferences.ssh.key) {
+    closeStartSsh();
     ipcRenderer.send('test-ssh-key-file-exists', preferences.ssh.key);
+    return true;
   }
   else {
     closeStartSsh();
@@ -213,13 +215,8 @@ function testSshPrefs() {
   }
 }
 ipcRenderer.on('test-ssh-key-file', (event, exists) => {
-  if (exists) {
-    closeStartSsh();
-    return true;
-  }
-  else {
+  if (!exists) {
     openStartSsh();
-    return false;
   }
 });
 
