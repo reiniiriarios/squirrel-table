@@ -3,6 +3,7 @@
 SquirrelTable is a desktop application that can run MySQL queries over SSH and generate CSV files. Useful for QA where queries need to be run repeatedly and CSV files handed off. Typical usage within a team might be to have a directory of SQL files syncing over cloud storage that one person can update and other people can simply open SquirrelTable and run as they need.
 
 ![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-31%20174214.png)
+
 ## Latest Release
 
 * [Windows x64 Installer](https://github.com/reiniiriarios/squirrel-table/releases/download/v0.5.4/SquirrelTableSetup.exe)

@@ -302,7 +302,10 @@ ipcRenderer.on('preferences-updated', (event, section, newPrefs) => {
 });
 
 function tryRefreshList() {
-  if (testDirPrefs()) {
+  let testSql = testSqlPrefs();
+  let testSsh = testSshPrefs();
+  let testDir = testDirPrefs();
+  if (testSql && testSsh && testDir) {
     noQueriesMsg.css('display','none');
     clearCurrentQuery();
     listQueries();

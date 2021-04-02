@@ -254,6 +254,8 @@ async function readImportedPrefs(filePath) {
       let importedPrefs = JSON.parse(importedPrefsString);
       // only import specific sections
       preferencesEncrypted = {...preferencesEncrypted, ...{sql:importedPrefs.sql}, ...{ssh:importedPrefs.ssh}, ...{sshEnabled:importedPrefs.sshEnabled}};
+      // after importing, the following will be unencrypted
+      preferences = {...preferences, ...{sql:importedPrefs.sql}, ...{ssh:importedPrefs.ssh}, ...{sshEnabled:importedPrefs.sshEnabled}};
       if (!preferencesEncrypted.ssh.encryptedKey) {
         resolve();
       }
