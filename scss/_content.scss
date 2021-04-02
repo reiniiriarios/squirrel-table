@@ -43,6 +43,9 @@
       }
     }
   }
+  #actions {
+    white-space: nowrap;
+  }
   #status {
     color: $mutedTextColor;
     padding: 10px 0;
