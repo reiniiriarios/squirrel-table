@@ -18,7 +18,7 @@ function saveCsvString(csvString, defaultName, callback) {
   BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Saving File');
   dialog.showSaveDialog(null, {
     title: "Save CSV",
-    defaultPath : app.getPath('desktop') + '/' + defaultName + '.csv',
+    defaultPath : path.join(app.getPath('desktop'), defaultName + '.csv'),
     buttonLabel : "Save CSV",
     filters :[
       {name: 'CSV', extensions: ['csv']},
