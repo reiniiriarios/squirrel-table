@@ -2,7 +2,7 @@
 
 SquirrelTable is a desktop application that can run MySQL queries over SSH and generate CSV and XLSX files. Useful for QA where queries need to be run repeatedly and files handed off. Typical usage within a team might be to have a directory of SQL files syncing over cloud storage that one person can update and other people can simply open SquirrelTable and run as they need.
 
-![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-31%20174214.png)
+![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/query.png)
 
 ## Latest Release
 
@@ -17,13 +17,11 @@ Any commented lines in SQL files will appear at the bottom of the screen under C
 
 After running a query, results will be displayed. You can then save the results as a CSV or XLSX.
 
-![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20225608.png)
+![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/results.png)
 
 ### Importing and Exporting Settings
 
 If you want to copy your settings to another device or want to quickly set up other users, you can export your settings as a `.json` file. Your login information and SSH key will be encrypted. Upon importing, the SSH key is decrypted and stored alongside the imported preferences file. If you change the key file after importing, the imported key will be deleted.
-
-![](https://raw.githubusercontent.com/reiniiriarios/squirrel-table/master/screenshots/Screenshot%202021-03-27%20221930.png)
 
 ## To Do
 
@@ -53,6 +51,18 @@ See `forge.config.js` for settings. You'll need to edit as needed.
 ### To Make
 
 `npm run make`
+
+## Why SquirrelTable?
+
+Finding myself writing query after query for data analysis and QA, I was using HeidiSQL, but wanted a simpler solution for myself and needed a simpler solution to distribute to other employees. My primary use for the app is in an ecommerce environment, but the app could be useful wherever there's a regular and evolving need for data analysis and/or QA.
+
+### Specific Use Cases
+
+* Generating statistics on how often different shipping methods are used.
+* Finding user errors that aren't caught, such as setting incorrect product visibility settings. Not specifically an error, but incorrect nonetheless.
+* Finding users who have tried to add a third party connection, such as a shipping integration, but never finished setting it up (maybe they used the wrong account ID).
+* Pulling a list of users who have been inactive but have added products. Or who haven't.
+* Finding out how long, on average, it takes between users signing up for an account and adding their first product, then their third, split by user demographics.
 
 ## Why "SquirrelTable?"
 SQL...SQuirreL :3
