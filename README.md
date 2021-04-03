@@ -23,6 +23,21 @@ After running a query, results will be displayed. You can then save the results 
 
 If you want to copy your settings to another device or want to quickly set up other users, you can export your settings as a `.json` file. Your login information and SSH key will be encrypted. Upon importing, the SSH key is decrypted and stored alongside the imported preferences file. If you change the key file after importing, the imported key will be deleted.
 
+## Why SquirrelTable?
+
+Finding myself writing query after query for data analysis and QA, I was using HeidiSQL, but wanted a simpler solution for myself and needed a simpler solution to distribute to other employees. My primary use for the app is in an ecommerce environment, but the app could be useful wherever there's a regular and evolving need for data analysis and/or QA.
+
+### Specific Use Cases
+
+* Generating statistics on how often different shipping methods are used.
+* Finding user errors that aren't caught, such as setting incorrect product visibility settings. Not specifically an error, but incorrect nonetheless.
+* Finding users who have tried to add a third party connection, such as a shipping integration, but never finished setting it up (maybe they used the wrong account ID).
+* Pulling a list of users who have been inactive but have added products. Or who haven't.
+* Finding out how long, on average, it takes between users signing up for an account and adding their first product, then their third, split by user demographics.
+
+## Why "SquirrelTable?"
+SQL...SQuirreL :3
+
 ## To Do
 
 * Auto-refresh when files in directory change
@@ -51,18 +66,3 @@ See `forge.config.js` for settings. You'll need to edit as needed.
 ### To Make
 
 `npm run make`
-
-## Why SquirrelTable?
-
-Finding myself writing query after query for data analysis and QA, I was using HeidiSQL, but wanted a simpler solution for myself and needed a simpler solution to distribute to other employees. My primary use for the app is in an ecommerce environment, but the app could be useful wherever there's a regular and evolving need for data analysis and/or QA.
-
-### Specific Use Cases
-
-* Generating statistics on how often different shipping methods are used.
-* Finding user errors that aren't caught, such as setting incorrect product visibility settings. Not specifically an error, but incorrect nonetheless.
-* Finding users who have tried to add a third party connection, such as a shipping integration, but never finished setting it up (maybe they used the wrong account ID).
-* Pulling a list of users who have been inactive but have added products. Or who haven't.
-* Finding out how long, on average, it takes between users signing up for an account and adding their first product, then their third, split by user demographics.
-
-## Why "SquirrelTable?"
-SQL...SQuirreL :3
