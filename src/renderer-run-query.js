@@ -1,7 +1,7 @@
 const { inArray } = require("jquery");
 
 let resultsColumnAsc = [];
-let resultsTable;
+let sortedColumn;
 
 // sort either alphabetically or numerically
 // depending on selectedQuery.fields[columnIndex].display
@@ -13,7 +13,6 @@ let sortableTypes = [...sortAlpha, ...sortNumeric, ...sortTime];
 
 function displayResult() {
   codeArea.css('display', 'none');
-  resultsColumnAsc = [];
 
   let table = document.createElement("table");
   table.id = 'results-table';
@@ -31,8 +30,15 @@ function displayResult() {
       th.classList.add('sortable');
       th.setAttribute('data-column', columnIndex);
       th.setAttribute('data-type', selectedQuery.fields[columnIndex].display);
-      resultsColumnAsc[columnIndex] = true;
-      $(th).on('click', event => { sortResults($(event.target)); });
+      if (sortedColumn == columnIndex) {
+        if (resultsColumnAsc[columnIndex]) {
+          th.classList.add('sort-asc');
+        }
+        else {
+          th.classList.add('sort-desc');
+        }
+      }
+      $(th).on('click', sortResults);
     }
     theadtr.appendChild(th);
   });
@@ -48,63 +54,60 @@ function displayResult() {
   });
 
   result.css('display', 'block').append(table);
-  resultsTable = table;
-  updateStatus('Done');
+  updateStatus(selectedQuery.result.length + ' results');
   saveButton.attr('disabled', false).css('display', 'inline-block');
 }
 
-function sortResults(column) {
-  //column
+function sortResults(event) {
+  let column = $(event.target);
   let columnId = column.attr('data-column');
   let columnType = column.attr('data-type');
-  let asc = resultsColumnAsc[columnId];
+  let asc = resultsColumnAsc[columnId] === true;
   for (let i = 0; i < resultsColumnAsc.length; i++) {
-    resultsColumnAsc[i] = true;
+    if (i != columnId) {
+      resultsColumnAsc[i] = true;
+    }
   }
-  resultsColumnAsc[columnId] = !asc;
-  $('.results-column').removeClass('sort-asc').removeClass('sort-desc');
-  if (asc) {
-    column.addClass('sort-asc');
-  }
-  else {
-    column.addClass('sort-desc');
-  }
+  resultsColumnAsc[columnId] = typeof resultsColumnAsc[columnId] == 'undefined' ? true : !asc;
+  sortedColumn = columnId;
   //sort
-  let rows;
   let swapping = true;
   let swap = false;
   while (swapping) {
     swapping = false;
-    rows = resultsTable.rows;
-    let i = 1;
-    for (i = 1; i < (rows.length - 1); i++) {
+    let i = 0;
+    let x;
+    let y;
+    for (i = 0; i < selectedQuery.result.length - 1; i++) {
       swap = false;
-      x = rows[i].cells[columnId];
-      y = rows[i + 1].cells[columnId];
-      // sort alpha, numeric, and time differently
+      x = selectedQuery.result[i][columnId];
+      y = selectedQuery.result[i + 1][columnId];
+      // sort alpha
       if (inArray(columnType, sortAlpha) !== -1) {
-        if (asc && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        if (asc && x.toLowerCase() > y.toLowerCase()) {
           swap = true;
           break;
         }
-        else if (!asc && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        else if (!asc && x.toLowerCase() < y.toLowerCase()) {
           swap = true;
           break;
         }
       }
+      // sort numeric
       else if (inArray(columnType, sortNumeric) !== -1) {
-        if (asc && parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+        if (asc && parseFloat(x) > parseFloat(y)) {
           swap = true;
           break;
         }
-        else if (!asc && parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+        else if (!asc && parseFloat(x) < parseFloat(y)) {
           swap = true;
           break;
         }
       }
+      // sort time
       else if (inArray(columnType, sortTime) !== -1) {
-        let xT = new Date(x.innerHTML);
-        let yT = new Date(y.innerHTML);
+        let xT = new Date(x);
+        let yT = new Date(y);
         if (asc && xT.getTime() > yT.getTime()) {
           swap = true;
           break;
@@ -117,8 +120,14 @@ function sortResults(column) {
       // else don't try to sort
     }
     if (swap) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      let tmp = selectedQuery.result[i];
+      selectedQuery.result[i] = selectedQuery.result[i + 1]
+      selectedQuery.result[i + 1] = tmp;
       swapping = true;
+    }
+    else {
+      result.text(' ');
+      displayResult();
     }
   }
 }

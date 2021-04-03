@@ -278,51 +278,51 @@ async function readImportedPrefs(filePath) {
 
 ipcMain.on('export-settings',(event) => {
   try {
-  dialog.showSaveDialog(null, {
-    title: "Export Settings",
-    defaultPath : path.join(app.getPath('desktop'), 'preferences.json'),
-    buttonLabel : "Save File",
-    filters :[
-      {name: 'JSON', extensions: ['json']},
-      {name: 'All Files', extensions: ['*']}
-    ]
-  }).then(result => {
-    if (result.canceled) {
-      event.reply('settings-exported');
-    }
-    else {
-      // only export these sections (and ssh key, encrypted separately)
-      encryptPrefs().then(err => {
-        if (err) throw err;
-        let preferencesLimited = {
-          sql: preferencesEncrypted.sql,
-          ssh: preferencesEncrypted.ssh,
-          sshEnabled: preferencesEncrypted.sshEnabled
-        };
-        if (preferencesLimited.ssh.key) {
-          fs.readFile(preferencesLimited.ssh.key, 'utf8', (err, key) => {
-            if (err) throw err;
-            crypt.encrypt(key).then((encryptedKey) => {
-              preferencesLimited.ssh.encryptedKey = encryptedKey;
-              preferencesLimited.ssh.key = '';
-              let exportPrefsString = JSON.stringify(preferencesLimited,null,"\t");
-              fs.writeFile(result.filePath, exportPrefsString, (err) => {
-                if (err) throw err;
-                event.reply('settings-exported');
+    dialog.showSaveDialog(null, {
+      title: "Export Settings",
+      defaultPath : path.join(app.getPath('desktop'), 'preferences.json'),
+      buttonLabel : "Save File",
+      filters :[
+        {name: 'JSON', extensions: ['json']},
+        {name: 'All Files', extensions: ['*']}
+      ]
+    }).then(result => {
+      if (result.canceled) {
+        event.reply('settings-exported');
+      }
+      else {
+        // only export these sections (and ssh key, encrypted separately)
+        encryptPrefs().then(err => {
+          if (err) throw err;
+          let preferencesLimited = {
+            sql: preferencesEncrypted.sql,
+            ssh: preferencesEncrypted.ssh,
+            sshEnabled: preferencesEncrypted.sshEnabled
+          };
+          if (preferencesLimited.ssh.key) {
+            fs.readFile(preferencesLimited.ssh.key, 'utf8', (err, key) => {
+              if (err) throw err;
+              crypt.encrypt(key).then((encryptedKey) => {
+                preferencesLimited.ssh.encryptedKey = encryptedKey;
+                preferencesLimited.ssh.key = '';
+                let exportPrefsString = JSON.stringify(preferencesLimited,null,"\t");
+                fs.writeFile(result.filePath, exportPrefsString, (err) => {
+                  if (err) throw err;
+                  event.reply('settings-exported');
+                });
               });
             });
-          });
-        }
-        else {
-          let exportPrefsString = JSON.stringify(preferencesLimited,null,"\t");
-          fs.writeFile(result.filePath, exportPrefsString, (err) => {
-            if (err) throw err;
-            event.reply('settings-exported');
-          });
-        }
-      });
-    }
-  }).catch(err => { throw err });
+          }
+          else {
+            let exportPrefsString = JSON.stringify(preferencesLimited,null,"\t");
+            fs.writeFile(result.filePath, exportPrefsString, (err) => {
+              if (err) throw err;
+              event.reply('settings-exported');
+            });
+          }
+        });
+      }
+    }).catch(err => { throw err });
   }
   catch (err) {
     log.error(err); // handle better

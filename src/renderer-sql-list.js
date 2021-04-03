@@ -12,6 +12,8 @@ function clearCurrentQuery() {
 
 function clearResult() {
   selectedQuery.result = '';
+  resultsColumnAsc = [];
+  sortedColumn = -1;
   result.text(' ');
   result.css('display', 'none');
   codeArea.css('display', 'block');
@@ -77,7 +79,7 @@ ipcRenderer.on('sql-read', (event, sql) => {
   let sqlHighlighted = highlight(selectedQuery.sql, {
     html: true
   });
-  sqlHighlighted = sqlHighlighted.replace(/(?:\r\n|\r|\n)/g, '<br>').replace(/(?:\t)/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+  sqlHighlighted = sqlHighlighted.replace(/(?:\r\n|\r|\n)/g, "<br>\n").replace(/(?:\t)/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
   codeEditor.html(sqlHighlighted);
 
   let displayedLines = selectedQuery.sql.split(/\r\n|\r|\n/).length;
