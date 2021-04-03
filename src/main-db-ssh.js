@@ -7,12 +7,17 @@ const prefs = require(path.join(__dirname,'main-preferences.js'));
 const log = require('electron-log');
 
 class dbssh {
+  ssh;
+  create = () => {
+    this.ssh = new Client();
+  }
   connection = () => {
     return new Promise((resolve, reject) => {
       try {
+        this.create();
         let preferences = prefs.getPreferences();
-        ssh.on('ready', () => {
-          ssh.forwardOut(
+        this.ssh.on('ready', () => {
+          this.ssh.forwardOut(
             '127.0.0.1',
             3306,
             preferences.sql.host,
@@ -40,30 +45,25 @@ class dbssh {
             }
           });
         });
-        ssh.on('error', error => {
+        this.ssh.on('error', error => {
           log.error(error);
-          if (typeof error.code != 'undefined') {
-            let msg;
-            switch (error.code) {
-              case 'ENOTFOUND':
-                msg = 'Host not found';
-                break;
-              case 'ETIMEDOUT':
-                msg = 'Connection timed out';
-                break;
-              case 'ECONNREFUSED':
-                msg = 'Connection refused';
-                break;
-              default:
-                msg = error.message;
-            }
-            BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', msg);
+          let msg;
+          switch (error.code) {
+            case 'ENOTFOUND':
+              msg = 'Host not found';
+              break;
+            case 'ETIMEDOUT':
+              msg = 'Connection timed out';
+              break;
+            case 'ECONNREFUSED':
+              msg = 'Connection refused';
+              break;
+            default:
+              msg = error.message;
           }
-          else {
-            BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
-          }
+          BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', msg);
         });
-        ssh.connect({
+        this.ssh.connect({
           host: preferences.ssh.host,
           port: preferences.ssh.port,
           username: preferences.ssh.user,
@@ -79,7 +79,8 @@ class dbssh {
   }
 
   end = () => {
-    ssh.end();
+    this.ssh.end();
+    delete this.ssh;
   };
 }
 
