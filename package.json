@@ -1,7 +1,7 @@
 {
   "name": "squirrel-table",
   "productName": "SquirrelTable",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "Run SQL files over SSH and save CSVs from the results",
   "main": "src/main.js",
   "scripts": {
@@ -32,12 +32,13 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^4.3.8",
     "electron-window-state": "^5.0.3",
+    "excel4node": "^1.7.2",
     "jquery": "^3.6.0",
     "mysql2": "^2.2.5",
     "node-fetch": "^2.6.1",
-    "node-ssh": "^11.1.1",
     "semver": "^7.3.5",
-    "sql-highlight": "^3.3.3"
+    "sql-highlight": "^3.3.3",
+    "ssh2": "^0.8.9"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",

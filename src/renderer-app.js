@@ -54,6 +54,7 @@ const statusText       = $('#status');
 const runButton        = $('#run');
 const editButton       = $('#edit');
 const saveButton       = $('#save');
+const saveXlButton     = $('#save-xl');
 const infoArea         = $('#info');
 const infoName         = $('#info-name');
 const infoVersion      = $('#info-version');

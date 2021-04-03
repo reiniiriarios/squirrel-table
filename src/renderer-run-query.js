@@ -56,6 +56,7 @@ function displayResult() {
   result.css('display', 'block').append(table);
   updateStatus(selectedQuery.result.length + ' results');
   saveButton.attr('disabled', false).css('display', 'inline-block');
+  saveXlButton.attr('disabled', false).css('display', 'inline-block');
 }
 
 function sortResults(event) {
@@ -168,11 +169,27 @@ function saveCSV() {
   }
   else {
     updateStatus('Saving File');
-    saveButton.addClass('running');
+    saveButton.addClass('running').attr('disabled',true);
     ipcRenderer.send('save-csv', selectedQuery.name, selectedQuery.fields, selectedQuery.result);
   }
 }
 ipcRenderer.on('csv-saved', (event) => {
   clearStatus(4000);
-  saveButton.removeClass('running');
+  saveButton.removeClass('running').attr('disabled',false);
+});
+
+saveXlButton.on('click',saveXl);
+function saveXl() {
+  if (saveXlButton.attr('disabled') == true) {
+    return false;
+  }
+  else {
+    updateStatus('Saving File');
+    saveXlButton.addClass('running').attr('disabled',true);
+    ipcRenderer.send('save-xl', selectedQuery.name, selectedQuery.fields, selectedQuery.result);
+  }
+}
+ipcRenderer.on('xl-saved', (event) => {
+  clearStatus(4000);
+  saveXlButton.removeClass('running').attr('disabled',false);
 });

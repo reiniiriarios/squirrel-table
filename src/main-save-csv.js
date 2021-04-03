@@ -60,8 +60,7 @@ ipcMain.on('save-csv', (event, name, fields, result) => {
     let cH = currentDate.getHours();
     let cN = currentDate.getMinutes();
     let cS = currentDate.getSeconds();
-    name = name.toLowerCase().replace(/(?:[^a-z0-9 ])/g, '').replace(/(?: +)/, '-');
-    let filename = name + '-' + cY + cM + cD + '-' + cH + cN + cS;
+    let filename = name.toLowerCase().replace(/(?:[^a-z0-9 ])/g, '').replace(/(?: +)/g, '-') + '-' + cY + cM + cD + '-' + cH + cN + cS;
     saveCsvString(csvString, filename, (location) => {
       if (location) {
         BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'File Saved');

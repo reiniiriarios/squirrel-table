@@ -39,6 +39,7 @@ app.on('ready', function() {
     require(path.join(__dirname,'main-sql-list.js'));
     require(path.join(__dirname,'main-run-query.js'));
     require(path.join(__dirname,'main-save-csv.js'));
+    require(path.join(__dirname,'main-save-xl.js'));
     require(path.join(__dirname,'main-update.js'));
     
     createMainWindow();
