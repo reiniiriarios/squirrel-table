@@ -50,6 +50,9 @@
       &#close:hover {
         background-color: $darkred;
         color: $white;
+        svg {
+          fill: $white;
+        }
       }
     }
   }

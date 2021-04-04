@@ -8,7 +8,9 @@ const themes = [
   'bubblegum',
   'dracula',
   'onedark',
-  'rosepine'
+  'rosepine',
+  'nord',
+  'gruvbox'
 ];
 
 const setTheme = (theme) => {

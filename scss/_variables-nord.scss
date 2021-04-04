@@ -1,0 +1,76 @@
+$nord0:      #2e3440;
+$nord1:      #3b4252;
+$nord2:      #434c5e;
+$nord3:      #4c566a;
+$nord4:      #d8dee9;
+$nord5:      #e5e9f0;
+$nord6:      #eceff4;
+$nord7:      #8fbcbb;
+$nord8:      #88c0d0;
+$nord9:      #81a1c1;
+$nord10:     #5e81ac;
+$nord11:     #bf616a;
+$nord12:     #d08770;
+$nord13:     #ebcb8b;
+$nord14:     #a3be8c;
+$nord15:     #b48ead;
+
+$uiColor1: darken($nord0,2%);
+$uiColor2: $nord0;
+$uiColor3: darken($nord1,2%);
+$uiColor4: $nord1;
+$uiColor5: darken($nord2,2%);
+$uiColor6: $nord2;
+$uiColor7: darken($nord3,2%);
+$uiColor8: $nord3;
+
+$uiMutedColor1: desaturate($nord0, 50%);
+$uiMutedColor2: desaturate($nord2, 50%);
+
+$white:      $nord6;
+$lightgrey:  $nord5;
+$darkgrey:   $nord4;
+$red:        $nord11;
+$orange:     $nord12;
+$yellow:     $nord13;
+$green:      $nord14;
+$cyan:       $nord8;
+$blue:       $nord10;
+$purple:     $nord15;
+$darkred:    darken($nord11,30%);
+
+$shinyColor: #fff;
+
+$textColor:      $white;
+$mutedTextColor: $lightgrey;
+$darkTextColor:  $darkgrey;
+$errorColor:     $red;
+$accentColor:    $cyan;
+$selectColor:    $lightgrey;
+$selectTxtColor: $uiColor1;
+
+$colorKeyword:  $nord7;
+$colorFunction: $nord8;
+$colorNumber:   $purple;
+$colorString:   $green;
+$colorSpecial:  $nord9;
+$colorBracket:  $nord10;
+
+$colorResultInt:     $nord10;
+$colorResultDecimal: $purple;
+$colorResultFloat:   $red;
+$colorResultString:  $nord6;
+$colorResultEnum:    $nord7;
+$colorResultJson:    $nord4;
+$colorResultBlob:    $nord5;
+$colorResultTime:    $nord8;
+
+$mainFontFamilies: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$monospaceFontFamilies: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;
+
+$fontSize: 13px;
+$taskbarHeight: 32px;
+$menubarWidth: 48px;
+$settingsPanelWidth: 250px;
+$sidebarWidth: 300px;
+$infoHeight: 120px;

@@ -71,30 +71,30 @@
   }
 }
 .datatype-decimal {
-  color: $purple;
+  color: $colorResultDecimal;
   white-space: nowrap;
 }
 .datatype-int {
-  color: $red;
+  color: $colorResultInt;
   white-space: nowrap;
 }
 .datatype-float {
-  color: $yellow;
+  color: $colorResultFloat;
   white-space: nowrap;
 }
 .datatype-enum {
-  color: $blue;
+  color: $colorResultEnum;
 }
 .datatype-string {
-  color: $textColor;
+  color: $colorResultString;
 }
 .datatype-json {
-  color: $orange;
+  color: $colorResultJson;
 }
 .datatype-blob {
-  color: $mutedTextColor;
+  color: $colorResultBlob;
 }
 .datatype-time {
-  color: $green;
+  color: $colorResultTime;
   white-space: nowrap;
 }

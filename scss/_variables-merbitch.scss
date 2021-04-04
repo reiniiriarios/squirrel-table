@@ -39,6 +39,15 @@ $colorString:   $cyan;
 $colorSpecial:  $blue;
 $colorBracket:  $blue;
 
+$colorResultInt:     $purple;
+$colorResultDecimal: $orange;
+$colorResultFloat:   $red;
+$colorResultString:  $white;
+$colorResultEnum:    $blue;
+$colorResultJson:    $cyan;
+$colorResultBlob:    $lightgrey;
+$colorResultTime:    $green;
+
 $mainFontFamilies: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 $monospaceFontFamilies: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;
 

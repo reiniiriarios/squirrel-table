@@ -30,7 +30,7 @@ $mutedTextColor: $lightgrey;
 $darkTextColor:  $darkgrey;
 $errorColor:     $red;
 $accentColor:    $cyan;
-$selectColor:    $darkgrey;
+$selectColor:    $lightgrey;
 $selectTxtColor: $uiColor1;
 
 $colorKeyword:  $purple;
@@ -39,6 +39,15 @@ $colorNumber:   $orange;
 $colorString:   $green;
 $colorSpecial:  $cyan;
 $colorBracket:  $blue;
+
+$colorResultInt:     $yellow;
+$colorResultDecimal: $orange;
+$colorResultFloat:   $red;
+$colorResultString:  $white;
+$colorResultEnum:    $blue;
+$colorResultJson:    $darkgrey;
+$colorResultBlob:    $lightgrey;
+$colorResultTime:    $cyan;
 
 $mainFontFamilies: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 $monospaceFontFamilies: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;

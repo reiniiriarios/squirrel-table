@@ -1,0 +1,59 @@
+$uiColor1: #181818;
+$uiColor2: #282828;
+$uiColor3: #3c3836;
+$uiColor4: #494340;
+$uiColor5: #504945;
+$uiColor6: #665c54;
+$uiColor7: #70655c;
+$uiColor8: #7c6f64;
+
+$uiMutedColor1: #32302f;
+$uiMutedColor2: #494745;
+
+$white:      #eddbb2;
+$lightgrey:  #a89984;
+$darkgrey:   #928374;
+$red:        #fb4934;
+$orange:     #fe8019; //d65d0e
+$yellow:     #fabd2f; //d79921
+$green:      #b8bb26; //98971a
+$cyan:       #8ec07c; //689d6a
+$blue:       #83a598; //458588
+$purple:     #d3869b; //b16286
+$darkred:    #cc241d;
+
+$shinyColor: #fbf1c7;
+
+$textColor:      $white;
+$mutedTextColor: $lightgrey;
+$darkTextColor:  $darkgrey;
+$errorColor:     $red;
+$accentColor:    $orange;
+$selectColor:    $lightgrey;
+$selectTxtColor: $uiColor1;
+
+$colorKeyword:  $orange;
+$colorFunction: $cyan;
+$colorNumber:   $purple;
+$colorString:   $yellow;
+$colorSpecial:  $green;
+$colorBracket:  $blue;
+
+$colorResultInt:     $blue;
+$colorResultDecimal: $purple;
+$colorResultFloat:   $red;
+$colorResultString:  $white;
+$colorResultEnum:    $green;
+$colorResultJson:    $yellow;
+$colorResultBlob:    $lightgrey;
+$colorResultTime:    $cyan;
+
+$mainFontFamilies: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$monospaceFontFamilies: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;
+
+$fontSize: 13px;
+$taskbarHeight: 32px;
+$menubarWidth: 48px;
+$settingsPanelWidth: 250px;
+$sidebarWidth: 300px;
+$infoHeight: 120px;

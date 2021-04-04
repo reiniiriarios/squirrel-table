@@ -311,3 +311,67 @@
     background-color: $accentColor;
   }
 }
+
+@import "_variables-nord.scss";
+
+.theme.nord {
+  span:nth-child(1) {
+    background-color: $uiColor1;
+  }
+  span:nth-child(2) {
+    background-color: $uiColor2;
+  }
+  span:nth-child(3) {
+    background-color: $uiColor3;
+  }
+  span:nth-child(4) {
+    background-color: $uiColor4;
+  }
+  span:nth-child(5) {
+    background-color: $uiColor5;
+  }
+  span:nth-child(6) {
+    background-color: $uiColor6;
+  }
+  span:nth-child(7) {
+    background-color: $uiColor7;
+  }
+  span:nth-child(8) {
+    background-color: $uiColor8;
+  }
+  span:nth-child(9) {
+    background-color: $accentColor;
+  }
+}
+
+@import "_variables-gruvbox.scss";
+
+.theme.gruvbox {
+  span:nth-child(1) {
+    background-color: $uiColor1;
+  }
+  span:nth-child(2) {
+    background-color: $uiColor2;
+  }
+  span:nth-child(3) {
+    background-color: $uiColor3;
+  }
+  span:nth-child(4) {
+    background-color: $uiColor4;
+  }
+  span:nth-child(5) {
+    background-color: $uiColor5;
+  }
+  span:nth-child(6) {
+    background-color: $uiColor6;
+  }
+  span:nth-child(7) {
+    background-color: $uiColor7;
+  }
+  span:nth-child(8) {
+    background-color: $uiColor8;
+  }
+  span:nth-child(9) {
+    background-color: $accentColor;
+  }
+}
