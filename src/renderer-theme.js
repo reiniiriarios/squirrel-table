@@ -4,7 +4,11 @@ const themes = [
   'default',
   'merbitch',
   'github',
-  'tideup'
+  'tideup',
+  'bubblegum',
+  'dracula',
+  'onedark',
+  'rosepine'
 ];
 
 const setTheme = (theme) => {

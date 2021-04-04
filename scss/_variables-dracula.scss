@@ -1,0 +1,50 @@
+$uiColor1: #191a21;
+$uiColor2: #1d1e26;
+$uiColor3: #20222b;
+$uiColor4: #242630;
+$uiColor5: #282a36;
+$uiColor6: #2c2e3b;
+$uiColor7: #303340;
+$uiColor8: #343746;
+
+$uiMutedColor1: #1d1d22;
+$uiMutedColor2: #30303e;
+
+$white:      #f8f8f2;
+$lightgrey:  #6272a4;
+$darkgrey:   #44475a;
+$red:        #ff5555;
+$orange:     #ffb86c;
+$yellow:     #f1fa8c;
+$green:      #50fa7b;
+$cyan:       #8be9fd;
+$blue:       #bd93f9; //purple
+$purple:     #ff79c6; //pink
+$darkred:    #973131;
+
+$shinyColor: #fff;
+
+$textColor:      $white;
+$mutedTextColor: $lightgrey;
+$darkTextColor:  $darkgrey;
+$errorColor:     $red;
+$accentColor:    $cyan;
+$selectColor:    $lightgrey;
+$selectTxtColor: $white;
+
+$colorKeyword:  $purple;
+$colorFunction: $green;
+$colorNumber:   $blue;
+$colorString:   $yellow;
+$colorSpecial:  $cyan;
+$colorBracket:  $cyan;
+
+$mainFontFamilies: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$monospaceFontFamilies: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;
+
+$fontSize: 13px;
+$taskbarHeight: 32px;
+$menubarWidth: 48px;
+$settingsPanelWidth: 250px;
+$sidebarWidth: 300px;
+$infoHeight: 120px;

@@ -16,8 +16,8 @@ $darkgrey:   #3f4f53;
 $red:        #ff7b72;
 $orange:     #ffa876;
 $yellow:     #ffd07a;
-$chartreuse: #95cd6f;
-$green:      #6fcdc5;
+$green:      #95cd6f;
+$cyan:       #6fcdc5;
 $blue:       #84c0f3;
 $purple:     #d2a8ff;
 $darkred:    #aa2219;
@@ -28,12 +28,14 @@ $textColor:      $white;
 $mutedTextColor: $lightgrey;
 $darkTextColor:  $darkgrey;
 $errorColor:     $red;
-$accentColor:    $purple;
+$accentColor:    $cyan;
+$selectColor:    $cyan;
+$selectTxtColor: $uiColor1;
 
 $colorKeyword:  $purple;
 $colorFunction: $yellow;
 $colorNumber:   $red;
-$colorString:   $green;
+$colorString:   $cyan;
 $colorSpecial:  $blue;
 $colorBracket:  $blue;
 

@@ -1,0 +1,51 @@
+$uiColor1: hsl(249, 22%, 12%);
+$uiColor2: hsl(249, 23%, 15%);
+$uiColor3: hsl(249, 24%, 18%);
+$uiColor4: hsl(249, 25%, 21%);
+$uiColor5: hsl(249, 23%, 24%);
+$uiColor6: hsl(249, 21%, 27%);
+$uiColor7: hsl(249, 19%, 30%);
+$uiColor8: hsl(249, 16%, 33%);
+
+$uiMutedColor1: hsl(249, 8%, 20%);
+$uiMutedColor2: hsl(249, 8%, 30%);
+
+/* colors shifted by one at green */
+$white:      hsl(245, 50%, 91%);
+$lightgrey:  hsl(249, 12%, 47%);
+$darkgrey:   hsl(250, 13%, 36%);
+$red:        hsl(343, 76%, 68%);
+$orange:     hsl( 35, 88%, 72%);
+$yellow:     hsl(  2, 55%, 83%);
+$green:      hsl(147, 40%, 61%); // not spec
+$cyan:       hsl(189, 43%, 73%);
+$blue:       hsl(197, 48%, 47%);
+$purple:     hsl(267, 57%, 78%);
+$darkred:    hsl(343, 56%, 51%);
+
+$shinyColor: #fff;
+
+$textColor:      $white;
+$mutedTextColor: $lightgrey;
+$darkTextColor:  $darkgrey;
+$errorColor:     $red;
+$accentColor:    $cyan;
+$selectColor:    $darkgrey;
+$selectTxtColor: $uiColor1;
+
+$colorKeyword:  $cyan;
+$colorFunction: $yellow;
+$colorNumber:   $purple;
+$colorString:   $orange;
+$colorSpecial:  $blue;
+$colorBracket:  $lightgrey;
+
+$mainFontFamilies: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$monospaceFontFamilies: 'Inconsolata', 'Consolas', 'Lucida Console', monospace;
+
+$fontSize: 13px;
+$taskbarHeight: 32px;
+$menubarWidth: 48px;
+$settingsPanelWidth: 250px;
+$sidebarWidth: 300px;
+$infoHeight: 120px;

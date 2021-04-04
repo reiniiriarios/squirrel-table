@@ -36,8 +36,8 @@ code span,
   user-select: text;
 }
 ::selection {
-  color: $uiColor1;
-  background: $accentColor;
+  color: $selectTxtColor;
+  background: $selectColor;
 }
 table {
   border-collapse: collapse;
