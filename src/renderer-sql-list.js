@@ -3,8 +3,7 @@ function clearCurrentQuery() {
   selectedQuery.name = '';
   selectedQuery.desc = '';
   selectedQuery.sql = '';
-  runButton.attr('disabled', true);
-  runButton.addClass('disabled');
+  runButton.attr('disabled', true).addClass('disabled');
   codeEditor.text(' ');
   lineNumbersBlock.text(' ');
   comments.text(' ');
@@ -14,11 +13,10 @@ function clearResult() {
   selectedQuery.result = '';
   resultsColumnAsc = [];
   sortedColumn = -1;
-  result.text(' ');
-  result.css('display', 'none');
+  result.text(' ').css('display', 'none');
   codeArea.css('display', 'block');
-  saveButton.attr('disabled', true);
-  saveButton.css('display', 'none');
+  saveButton.attr('disabled', true).css('display','none');
+  saveXlButton.attr('disabled', true).css('display','none');
 }
 
 function listQueries() {
