@@ -2,7 +2,7 @@ const path = require('path');
 const mysql = require('mysql2');
 const prefs = require(path.join(__dirname,'main-preferences.js'));
 
-class mysqlConn {
+class db {
   connection = () => {
     return new Promise((resolve, reject) => {
       try {
@@ -28,7 +28,5 @@ class mysqlConn {
     //do nothing
   }
 };
-
-let db = new mysqlConn;
 
 module.exports = db;
