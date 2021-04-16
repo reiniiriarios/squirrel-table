@@ -85,11 +85,13 @@ function sortResults(event) {
       y = selectedQuery.result[i + 1][columnId];
       // sort alpha
       if (inArray(columnType, sortAlpha) !== -1) {
-        if (asc && x.toLowerCase() > y.toLowerCase()) {
+        let xx = typeof x === 'string' ? x.toLowerCase() : '';
+        let yy = typeof y === 'string' ? y.toLowerCase() : '';
+        if (asc && x > y) {
           swap = true;
           break;
         }
-        else if (!asc && x.toLowerCase() < y.toLowerCase()) {
+        else if (!asc && x < y) {
           swap = true;
           break;
         }
@@ -107,13 +109,13 @@ function sortResults(event) {
       }
       // sort time
       else if (inArray(columnType, sortTime) !== -1) {
-        let xT = new Date(x);
-        let yT = new Date(y);
-        if (asc && xT.getTime() > yT.getTime()) {
+        let xT = x ? new Date(x).getTime() : 0;
+        let yT = y ? new Date(y).getTime() : 0;
+        if (asc && xT > yT) {
           swap = true;
           break;
         }
-        else if (!asc && xT.getTime() < yT.getTime()) {
+        else if (!asc && xT < yT) {
           swap = true;
           break;
         }
