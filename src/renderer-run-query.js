@@ -47,7 +47,12 @@ function displayResult() {
     row.forEach((cell, columnIndex) => {
       let td = document.createElement('td');
       td.classList.add('datatype-' + selectedQuery.fields[columnIndex].display);
-      td.innerText = cell;
+      if (cell == null) {
+        td.innerHTML = '<span class="data-null">null</span>'
+      }
+      else {
+        td.innerText = cell;
+      }
       tr.appendChild(td);
     });
     tbody.appendChild(tr);

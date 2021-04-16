@@ -98,3 +98,8 @@
   color: $colorResultTime;
   white-space: nowrap;
 }
+.data-null {
+  color: $mutedTextColor;
+  font-variant: small-caps;
+  opacity: 0.5;
+}

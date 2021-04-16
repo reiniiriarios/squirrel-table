@@ -93,7 +93,7 @@ function createXl(name, fields, data, filepath) {
               cell_width = 9;
             }
             else if (value == null) {
-              ws.cell(cell_row,cell_col).string('NULL').style(nullStyle);
+              ws.cell(cell_row,cell_col).string('');
               cell_width = 4;
             }
             else {
