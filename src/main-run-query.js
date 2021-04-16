@@ -64,6 +64,25 @@ preferences = prefs.getPreferences();
 
 let dbctrl = preferences.sshEnabled ? new dbssh : new db;
 
+function queryError(error) {
+  log.error(error);
+  let msg;
+  switch (error.code) {
+    case 'ENOTFOUND':
+      msg = 'Host not found';
+      break;
+    case 'ETIMEDOUT':
+      msg = 'Connection timed out';
+      break;
+    case 'ECONNREFUSED':
+      msg = 'Connection refused';
+      break;
+    default:
+      msg = error.message;
+  }
+  BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', msg);
+}
+
 function runQuery(sql, callback) {
   if (preferences.sshEnabled) {
     BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Connecting Over SSH');
@@ -75,77 +94,80 @@ function runQuery(sql, callback) {
     dbctrl.connection().then(connection => {
       // query database 
       BrowserWindow.fromId(global.mainWindowId).webContents.send('update-status', 'Executing Query');
-      connection.query({sql: sql,rowsAsArray: true}, (error, results, fields) => {
-        if (error) throw error;
-        parsedFields = [];
-        fields.forEach((field) => {
-          switch (field.columnType) {
-            case columnTypes.MYSQL_TYPE_DECIMAL:
-            case columnTypes.MYSQL_TYPE_NEWDECIMAL:
-              field.displayType = 'decimal';
-              break;
-            case columnTypes.MYSQL_TYPE_TINY:
-            case columnTypes.MYSQL_TYPE_SHORT:
-            case columnTypes.MYSQL_TYPE_LONG:
-            case columnTypes.MYSQL_TYPE_LONGLONG:
-            case columnTypes.MYSQL_TYPE_INT24:
-              field.displayType = 'int';
-              break;
-            case columnTypes.MYSQL_TYPE_FLOAT:
-            case columnTypes.MYSQL_TYPE_DOUBLE:
-              field.displayType = 'float';
-              break;
-            case columnTypes.MYSQL_TYPE_TIMESTAMP:
-            case columnTypes.MYSQL_TYPE_DATE:
-            case columnTypes.MYSQL_TYPE_TIME:
-            case columnTypes.MYSQL_TYPE_DATETIME:
-            case columnTypes.MYSQL_TYPE_YEAR:
-              field.displayType = 'time';
-              break;
-            case columnTypes.MYSQL_TYPE_VARCHAR:
-            case columnTypes.MYSQL_TYPE_VAR_STRING:
-            case columnTypes.MYSQL_TYPE_STRING:
-              field.displayType = 'string';
-              break;
-            case columnTypes.MYSQL_TYPE_JSON:
-              field.displayType = 'json';
-              break;
-            case columnTypes.MYSQL_TYPE_BIT:
-              field.displayType = 'bit';
-              break;
-            case columnTypes.MYSQL_TYPE_ENUM:
-            case columnTypes.MYSQL_TYPE_SET:
-              field.displayType = 'enum';
-              break;
-            case columnTypes.MYSQL_TYPE_TINY_BLOB:
-            case columnTypes.MYSQL_TYPE_MEDIUM_BLOB:
-            case columnTypes.MYSQL_TYPE_LONG_BLOB:
-            case columnTypes.MYSQL_TYPE_BLOB:
-              field.displayType = 'blob';
-              break;
-            default:
-              field.displayType = 'other';
+      try {
+        connection.query({sql: sql,rowsAsArray: true}, (error, results, fields) => {
+          if (error) queryError(error);
+          else {
+            parsedFields = [];
+            fields.forEach((field) => {
+              switch (field.columnType) {
+                case columnTypes.MYSQL_TYPE_DECIMAL:
+                case columnTypes.MYSQL_TYPE_NEWDECIMAL:
+                  field.displayType = 'decimal';
+                  break;
+                case columnTypes.MYSQL_TYPE_TINY:
+                case columnTypes.MYSQL_TYPE_SHORT:
+                case columnTypes.MYSQL_TYPE_LONG:
+                case columnTypes.MYSQL_TYPE_LONGLONG:
+                case columnTypes.MYSQL_TYPE_INT24:
+                  field.displayType = 'int';
+                  break;
+                case columnTypes.MYSQL_TYPE_FLOAT:
+                case columnTypes.MYSQL_TYPE_DOUBLE:
+                  field.displayType = 'float';
+                  break;
+                case columnTypes.MYSQL_TYPE_TIMESTAMP:
+                case columnTypes.MYSQL_TYPE_DATE:
+                case columnTypes.MYSQL_TYPE_TIME:
+                case columnTypes.MYSQL_TYPE_DATETIME:
+                case columnTypes.MYSQL_TYPE_YEAR:
+                  field.displayType = 'time';
+                  break;
+                case columnTypes.MYSQL_TYPE_VARCHAR:
+                case columnTypes.MYSQL_TYPE_VAR_STRING:
+                case columnTypes.MYSQL_TYPE_STRING:
+                  field.displayType = 'string';
+                  break;
+                case columnTypes.MYSQL_TYPE_JSON:
+                  field.displayType = 'json';
+                  break;
+                case columnTypes.MYSQL_TYPE_BIT:
+                  field.displayType = 'bit';
+                  break;
+                case columnTypes.MYSQL_TYPE_ENUM:
+                case columnTypes.MYSQL_TYPE_SET:
+                  field.displayType = 'enum';
+                  break;
+                case columnTypes.MYSQL_TYPE_TINY_BLOB:
+                case columnTypes.MYSQL_TYPE_MEDIUM_BLOB:
+                case columnTypes.MYSQL_TYPE_LONG_BLOB:
+                case columnTypes.MYSQL_TYPE_BLOB:
+                  field.displayType = 'blob';
+                  break;
+                default:
+                  field.displayType = 'other';
+              }
+              parsedFields.push({
+                name:          field.name,
+                encoding:      field.encoding,
+                columnLength:  field.columnLength,
+                columnType:    field.columnType,
+                display:       field.displayType
+              });
+            });
+            connection.close();
+            dbctrl.end();
+            callback(parsedFields, results);
           }
-          parsedFields.push({
-            name:          field.name,
-            encoding:      field.encoding,
-            columnLength:  field.columnLength,
-            columnType:    field.columnType,
-            display:       field.displayType
-          });
         });
-        connection.close();
-        dbctrl.end();
-        callback(parsedFields, results);
-      });
-    }).catch(err => {
-      log.error(err);
-      BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', err.message);
-    });
+      }
+      catch(err) {
+        queryError(err);
+      }
+    }).catch(err => { queryError(err) });
   }
   catch (error) {
-    log.error(error);
-    BrowserWindow.fromId(global.mainWindowId).webContents.send('error-status', error.message);
+    queryError(err);
   }
 }
 
