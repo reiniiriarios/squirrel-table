@@ -5,6 +5,7 @@ const csvStringify = require('csv-stringify');
 const log = require('electron-log');
   
 function array2csv(data, callback) {
+  //todo: format timestamp
   csvStringify(data, (err, csvString) => {
     if (err) {
       log.error(err);
